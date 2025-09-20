@@ -15,12 +15,12 @@ function AdminNav({ current, onNavigate }) {
             <nav className="mx-auto max-w-md w-full">
                 <ul className="bottom-nav flex items-center list-none text-[12px] text-pink-200 py-3 rounded-2xl">
                     {tabs.map((t, index) => (
-                        <li key={t.key} className="flex-1">
+                        <li key={t.key} className={`${index === 0 ? 'flex justify-start' : index === 1 ? 'flex-1 flex justify-center' : 'flex justify-end'}`}>
                             <button
                                 type="button"
                                 aria-current={current === t.key ? 'page' : undefined}
                                 onClick={() => onNavigate?.(t.key)}
-                                className={`appearance-none border-0 outline-none py-2 flex flex-col items-center justify-center gap-1 rounded-xl transition-all duration-200 w-full ${index === 0 ? 'pl-4 pr-2' : index === 1 ? 'px-2' : 'pl-2 pr-4'} ${current === t.key ? 'bg-pink-400/20 text-white shadow-inner ring-1 ring-pink-300/30' : 'text-pink-300 hover:text-white/90 hover:bg-pink-400/10'}`}
+                                className={`appearance-none border-0 outline-none px-4 py-2 flex flex-col items-center justify-center gap-1 rounded-xl transition-all duration-200 ${current === t.key ? 'bg-pink-400/20 text-white shadow-inner ring-1 ring-pink-300/30' : 'text-pink-300 hover:text-white/90 hover:bg-pink-400/10'}`}
                             >
                                 <span aria-hidden className="text-[18px] leading-none">{t.icon}</span>
                                 <span className="leading-none">{t.label}</span>
