@@ -13,9 +13,9 @@ function AdminNav({ current, onNavigate }) {
     return (
         <div className="nav-wrap">
             <nav className="mx-auto max-w-md w-full">
-                <ul className="bottom-nav flex items-center list-none text-[12px] text-pink-200 py-3 rounded-2xl">
+                <ul className="bottom-nav flex justify-between items-center list-none text-[12px] text-pink-200 py-3 rounded-2xl w-full">
                     {tabs.map((t, index) => (
-                        <li key={t.key} className={`${index === 0 ? 'flex justify-start' : index === 1 ? 'flex-1 flex justify-center' : 'flex justify-end'}`}>
+                        <li key={t.key} className="flex">
                             <button
                                 type="button"
                                 aria-current={current === t.key ? 'page' : undefined}
