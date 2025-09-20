@@ -13,23 +13,29 @@ function AdminNav({ current, onNavigate }) {
     return (
         <div className="nav-wrap">
             <nav className="mx-auto max-w-md w-full">
-                <ul className="bottom-nav flex items-center list-none text-[12px] text-pink-200 py-3 rounded-2xl">
-                    {tabs.map((t, index) => (
-                        <li key={t.key} className="flex-1">
-                            <button
-                                type="button"
-                                aria-current={current === t.key ? 'page' : undefined}
-                                onClick={() => onNavigate?.(t.key)}
-                                className={`appearance-none border-0 outline-none px-4 py-2 flex flex-col items-center justify-center gap-1 rounded-xl transition-all duration-200 w-full ${current === t.key ? 'bg-pink-400/20 text-white shadow-inner ring-1 ring-pink-300/30' : 'text-pink-300 hover:text-white/90 hover:bg-pink-400/10'}`}
-                            >
-                                <span aria-hidden className="text-[18px] leading-none">{t.icon}</span>
-                                <span className="leading-none">{t.label}</span>
-                            </button>
-                        </li>
-                    ))}
+                <ul className="bottom-nav flex items-center list-none text-[12px] text-pink-200 py-3 rounded-2xl justify-between">
+                    <li className="flex-1">
+                        <button type="button" className="appearance-none border-0 outline-none px-4 py-2 flex flex-col items-center justify-center gap-1 rounded-xl transition-all duration-200 w-full text-pink-300 hover:text-white/90 hover:bg-pink-400/10">
+                            <span aria-hidden className="text-[18px] leading-none">🏠</span>
+                            <span className="leading-none">Home</span>
+                        </button>
+                    </li>
+                    <li className="flex-1 flex justify-center">
+                        <button type="button" className="appearance-none border-0 outline-none px-4 py-2 flex flex-col items-center justify-center gap-1 rounded-xl transition-all duration-200 w-full text-pink-300 hover:text-white/90 hover:bg-pink-400/10">
+                            <span aria-hidden className="text-[18px] leading-none">$</span>
+                            <span className="leading-none">Balance</span>
+                        </button>
+                    </li>
+                    <li className="flex-1 flex justify-end">
+                        <button type="button" className="appearance-none border-0 outline-none px-4 py-2 flex flex-col items-center justify-center gap-1 rounded-xl transition-all duration-200 w-full text-pink-300 hover:text-white/90 hover:bg-pink-400/10">
+                            <span aria-hidden className="text-[18px] leading-none">📊</span>
+                            <span className="leading-none">Stats</span>
+                        </button>
+                    </li>
                 </ul>
             </nav>
         </div>
+
     );
 }
 
