@@ -40,8 +40,6 @@ export default function AdminBalance() {
                     </button>
 
                     <div className="admin-balance-center">
-                        <div className="admin-balance-title">Balance</div>
-                        <div className="admin-balance-subtitle">Management</div>
                     </div>
 
                     <button

@@ -80,12 +80,15 @@ body {
     background: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .nav-wrap nav {
     max-width: 640px;
     margin-left: auto;
     margin-right: auto;
+    width: 100%;
 }
 
 .bottom-nav {
@@ -94,26 +97,62 @@ body {
     list-style: none;
     padding: 8px 12px;
     border-radius: 16px;
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 60px;
+    /* Fixed height to prevent deformation */
+}
+
+.bottom-nav li {
+    flex: 1;
+    display: flex;
+    min-width: 0;
+    /* Prevent flex items from growing beyond container */
 }
 
 .bottom-nav li:first-child {
-    display: flex;
     justify-content: flex-start;
 }
 
 .bottom-nav li:nth-child(2) {
-    display: flex;
     justify-content: center;
 }
 
 .bottom-nav li:last-child {
-    display: flex;
     justify-content: flex-end;
+}
+
+/* Zoom-resistant navigation */
+@media (max-width: 480px) {
+    .nav-wrap {
+        padding: 8px 12px;
+    }
+
+    .bottom-nav {
+        min-height: 56px;
+        padding: 6px 8px;
+    }
+
+    .bottom-nav li button {
+        min-height: 40px;
+        padding: 6px 8px;
+        font-size: 12px;
+    }
+}
+
+/* Prevent text scaling on zoom */
+.bottom-nav li button span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 100%;
 }
 
 /* Admin Pages CSS */
 .admin-container {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 6rem 1.5rem;
+    /* Added bottom padding for fixed nav */
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -461,7 +500,8 @@ body {
 
 /* Balance Page Styles */
 .admin-balance-container {
-    padding: 2rem 1.5rem;
+    padding: 2rem 1.5rem 6rem 1.5rem;
+    /* Added bottom padding for fixed nav */
     display: flex;
     flex-direction: column;
     gap: 2rem;
@@ -641,7 +681,8 @@ body {
 
 /* Stats Page Styles */
 .admin-stats-container {
-    padding: 1rem;
+    padding: 1rem 1rem 6rem 1rem;
+    /* Added bottom padding for fixed nav */
     display: flex;
     flex-direction: column;
     gap: 1rem;
@@ -765,10 +806,17 @@ body {
     border: 0;
     outline: 0;
     width: 100%;
+    max-width: 100%;
     padding: 8px 12px;
     border-radius: 12px;
     background: transparent;
     color: #cbd5e1;
+    min-height: 44px;
+    /* Fixed minimum height for touch targets */
+    box-sizing: border-box;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 /* App header styling */
