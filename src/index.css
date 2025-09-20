@@ -90,9 +90,25 @@ body {
 
 .bottom-nav {
     display: flex;
+    justify-content: space-between;
     list-style: none;
     padding: 8px 12px;
     border-radius: 16px;
+}
+
+.bottom-nav li:first-child {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.bottom-nav li:nth-child(2) {
+    display: flex;
+    justify-content: center;
+}
+
+.bottom-nav li:last-child {
+    display: flex;
+    justify-content: flex-end;
 }
 
 .bottom-nav li button {
