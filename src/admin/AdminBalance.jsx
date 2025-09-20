@@ -17,76 +17,66 @@ export default function AdminBalance() {
 
     const getStatusColor = (status) => {
         switch (status) {
-            case 'pending': return 'bg-yellow-500/20 text-yellow-400';
-            case 'completed': return 'bg-green-500/20 text-green-400';
-            case 'cancelled': return 'bg-red-500/20 text-red-400';
-            case 'failed': return 'bg-red-500/20 text-red-400';
-            default: return 'bg-gray-500/20 text-gray-400';
+            case 'pending': return 'admin-status-pending';
+            case 'completed': return 'admin-status-completed';
+            case 'cancelled': return 'admin-status-cancelled';
+            case 'failed': return 'admin-status-failed';
+            default: return 'admin-status-default';
         }
     };
 
     return (
-        <div className="px-6 py-8 space-y-8 text-white">
+        <div className="admin-balance-container">
             {/* Main Content Area */}
-            <div className="bg-gradient-to-br from-white/8 to-white/4 backdrop-blur-sm rounded-3xl p-8 border border-white/15 shadow-2xl shadow-purple-500/10">
+            <div className="admin-card">
                 {/* Toggle Buttons */}
-                <div className="flex justify-between items-center mb-8">
+                <div className="admin-balance-toggle">
                     <button
                         onClick={() => setActiveTab('deposit')}
-                        className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 ${activeTab === 'deposit'
-                            ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-xl shadow-green-500/25 ring-2 ring-green-400/50'
-                            : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
-                            }`}
+                        className={`admin-balance-button ${activeTab === 'deposit' ? 'admin-balance-button-active' : 'admin-balance-button-inactive'}`}
                     >
-                        <span className="flex items-center gap-3">
-                            <span className="text-2xl">💰</span>
-                            <span>Deposit</span>
-                        </span>
+                        <span>💰</span>
+                        <span>Deposit</span>
                     </button>
 
-                    <div className="text-center">
-                        <div className="text-2xl font-bold text-amber-400 mb-1">Balance</div>
-                        <div className="text-sm text-white/60">Management</div>
+                    <div className="admin-balance-center">
+                        <div className="admin-balance-title">Balance</div>
+                        <div className="admin-balance-subtitle">Management</div>
                     </div>
 
                     <button
                         onClick={() => setActiveTab('withdraw')}
-                        className={`px-8 py-4 rounded-2xl font-bold text-lg transition-all duration-300 transform hover:scale-105 active:scale-95 ${activeTab === 'withdraw'
-                            ? 'bg-gradient-to-r from-orange-500 to-red-500 text-white shadow-xl shadow-orange-500/25 ring-2 ring-orange-400/50'
-                            : 'bg-white/10 text-white/70 hover:bg-white/20 hover:text-white border border-white/20'
-                            }`}
+                        className={`admin-balance-button ${activeTab === 'withdraw' ? 'admin-balance-button-active' : 'admin-balance-button-inactive'}`}
                     >
-                        <span className="flex items-center gap-3">
-                            <span className="text-2xl">💸</span>
-                            <span>Withdraw</span>
-                        </span>
+                        <span>💸</span>
+                        <span>Withdraw</span>
                     </button>
                 </div>
 
                 {/* Table Header */}
-                <div className="grid grid-cols-3 gap-4 mb-6 p-4 bg-gradient-to-r from-white/12 to-white/8 rounded-xl border border-white/20">
-                    <div className="font-bold text-amber-400 flex items-center gap-2">
+                <div className="admin-table-header">
+                    <div className="admin-table-header-item">
                         <span>👤</span>
                         Player Name
                     </div>
                     {activeTab === 'deposit' ? (
                         <>
-                            <div className="font-bold text-amber-400 flex items-center gap-2">
+                            <div className="admin-table-header-item">
                                 <span>💰</span>
                                 Deposit Amount
                             </div>
-                            <div className="font-bold text-amber-400 flex items-center gap-2">
+                            <div className="admin-table-header-item">
                                 <span>🎁</span>
                                 Gift
                             </div>
                         </>
                     ) : (
                         <>
-                            <div className="font-bold text-amber-400 flex items-center gap-2">
+                            <div className="admin-table-header-item">
                                 <span>💸</span>
                                 Withdraw Amount
                             </div>
-                            <div className="font-bold text-amber-400 flex items-center gap-2">
+                            <div className="admin-table-header-item">
                                 <span>🏦</span>
                                 Account Number
                             </div>
@@ -95,46 +85,46 @@ export default function AdminBalance() {
                 </div>
 
                 {/* Table Content */}
-                <div className="space-y-4">
+                <div className="admin-table-content">
                     {activeTab === 'deposit' ? (
                         deposits.length > 0 ? (
                             deposits.map(d => (
-                                <div key={d._id} className="grid grid-cols-3 gap-4 p-4 bg-gradient-to-br from-white/8 to-white/4 backdrop-blur-sm rounded-xl border border-white/15 shadow-lg hover:shadow-xl transition-all duration-300">
-                                    <div className="text-sm font-medium truncate flex items-center gap-2">
-                                        <span className="text-blue-400">👤</span>
+                                <div key={d._id} className="admin-table-row">
+                                    <div className="admin-table-cell admin-table-cell-blue">
+                                        <span>👤</span>
                                         User {d.userId?.slice(-6) || 'Unknown'}
                                     </div>
-                                    <div className="text-sm font-bold text-green-400 flex items-center gap-2">
+                                    <div className="admin-table-cell admin-table-cell-bold admin-table-cell-green">
                                         <span>💰</span>
                                         ETB {d.amount}
                                     </div>
-                                    <div className="text-sm font-bold text-amber-400 flex items-center gap-2">
+                                    <div className="admin-table-cell admin-table-cell-bold admin-table-cell-amber">
                                         <span>🎁</span>
                                         +{Math.floor(d.amount * 0.1)} coins
                                     </div>
                                 </div>
                             ))
                         ) : (
-                            <div className="text-center text-white/60 py-12 bg-white/5 rounded-2xl border border-white/10">
-                                <div className="text-4xl mb-4">💰</div>
-                                <div className="text-lg font-medium mb-2">No deposits found</div>
-                                <div className="text-sm">Deposit transactions will appear here</div>
+                            <div className="admin-empty-state">
+                                <div className="admin-empty-icon">💰</div>
+                                <div className="admin-empty-title">No deposits found</div>
+                                <div className="admin-empty-subtitle">Deposit transactions will appear here</div>
                             </div>
                         )
                     ) : (
                         withdrawals.length > 0 ? (
                             withdrawals.map(w => (
-                                <div key={w._id} className="grid grid-cols-3 gap-4 p-4 bg-gradient-to-br from-white/8 to-white/4 backdrop-blur-sm rounded-xl border border-white/15 shadow-lg hover:shadow-xl transition-all duration-300">
-                                    <div className="text-sm font-medium truncate flex items-center gap-2">
-                                        <span className="text-blue-400">👤</span>
+                                <div key={w._id} className="admin-table-row">
+                                    <div className="admin-table-cell admin-table-cell-blue">
+                                        <span>👤</span>
                                         User {w.userId?.slice(-6) || 'Unknown'}
                                     </div>
-                                    <div className="text-sm font-bold text-orange-400 flex items-center gap-2">
+                                    <div className="admin-table-cell admin-table-cell-bold admin-table-cell-orange">
                                         <span>💸</span>
                                         ETB {w.amount}
                                     </div>
-                                    <div className="text-sm">
-                                        <span className={`px-3 py-2 rounded-full text-xs font-medium border ${getStatusColor(w.status)}`}>
+                                    <div className="admin-table-cell">
+                                        <span className={`admin-status-badge-small ${getStatusColor(w.status)}`}>
                                             {w.status === 'pending' && '⏳'}
                                             {w.status === 'completed' && '✅'}
                                             {w.status === 'cancelled' && '❌'}
@@ -145,10 +135,10 @@ export default function AdminBalance() {
                                 </div>
                             ))
                         ) : (
-                            <div className="text-center text-white/60 py-12 bg-white/5 rounded-2xl border border-white/10">
-                                <div className="text-4xl mb-4">💸</div>
-                                <div className="text-lg font-medium mb-2">No withdrawal requests</div>
-                                <div className="text-sm">Withdrawal requests will appear here</div>
+                            <div className="admin-empty-state">
+                                <div className="admin-empty-icon">💸</div>
+                                <div className="admin-empty-title">No withdrawal requests</div>
+                                <div className="admin-empty-subtitle">Withdrawal requests will appear here</div>
                             </div>
                         )
                     )}

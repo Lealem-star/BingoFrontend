@@ -32,50 +32,50 @@ export default function AdminStats() {
     }, []);
 
     return (
-        <div className="p-4 space-y-4 text-white">
+        <div className="admin-stats-container">
             {/* Today's Stats Section */}
-            <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded-2xl p-6 border border-white/10 shadow-lg">
-                    <div className="text-center">
-                        <div className="text-sm opacity-80 mb-2">Today's System Revenue</div>
-                        <div className="text-3xl font-extrabold text-amber-400">ETB {today.systemCut}</div>
+            <div className="admin-stats-grid">
+                <div className="admin-stats-card">
+                    <div>
+                        <div className="admin-stats-label">Today's System Revenue</div>
+                        <div className="admin-stats-value admin-stats-value-amber">ETB {today.systemCut}</div>
                     </div>
                 </div>
-                <div className="bg-white/5 rounded-2xl p-6 border border-white/10 shadow-lg">
-                    <div className="text-center">
-                        <div className="text-sm opacity-80 mb-2">Total Players Today</div>
-                        <div className="text-3xl font-extrabold text-green-400">{today.totalPlayers}</div>
+                <div className="admin-stats-card">
+                    <div>
+                        <div className="admin-stats-label">Total Players Today</div>
+                        <div className="admin-stats-value admin-stats-value-green">{today.totalPlayers}</div>
                     </div>
                 </div>
             </div>
 
             {/* Daily Statistics Table */}
-            <div className="bg-white/5 rounded-2xl p-6 border border-white/10 shadow-lg">
-                <h3 className="text-lg font-semibold mb-4 text-center">Daily Statistics</h3>
+            <div className="admin-stats-table-container">
+                <h3 className="admin-stats-table-title">Daily Statistics</h3>
 
                 {/* Table Header */}
-                <div className="grid grid-cols-5 gap-2 mb-4 p-3 bg-white/10 rounded-lg">
-                    <div className="font-semibold text-amber-400 text-sm">Day</div>
-                    <div className="font-semibold text-amber-400 text-sm">Game ID</div>
-                    <div className="font-semibold text-amber-400 text-sm">Stake</div>
-                    <div className="font-semibold text-amber-400 text-sm">No Played</div>
-                    <div className="font-semibold text-amber-400 text-sm">System Revenue</div>
+                <div className="admin-stats-table-header">
+                    <div className="admin-stats-table-header-item">Day</div>
+                    <div className="admin-stats-table-header-item">Game ID</div>
+                    <div className="admin-stats-table-header-item">Stake</div>
+                    <div className="admin-stats-table-header-item">No Played</div>
+                    <div className="admin-stats-table-header-item">System Revenue</div>
                 </div>
 
                 {/* Table Content */}
-                <div className="space-y-2 max-h-96 overflow-y-auto">
+                <div className="admin-stats-table-content">
                     {dailyStats.length > 0 ? (
                         dailyStats.map((stat, index) => (
-                            <div key={index} className="grid grid-cols-5 gap-2 p-3 bg-white/5 rounded-lg border border-white/10 text-sm">
-                                <div className="truncate">{stat.day}</div>
-                                <div className="truncate font-mono text-xs">{stat.gameId}</div>
-                                <div className="text-center">ETB {stat.stake}</div>
-                                <div className="text-center">{stat.noPlayed}</div>
-                                <div className="text-right font-medium text-amber-400">ETB {stat.systemRevenue}</div>
+                            <div key={index} className="admin-stats-table-row">
+                                <div className="admin-stats-table-cell">{stat.day}</div>
+                                <div className="admin-stats-table-cell admin-stats-table-cell-mono">{stat.gameId}</div>
+                                <div className="admin-stats-table-cell admin-stats-table-cell-center">ETB {stat.stake}</div>
+                                <div className="admin-stats-table-cell admin-stats-table-cell-center">{stat.noPlayed}</div>
+                                <div className="admin-stats-table-cell admin-stats-table-cell-right">ETB {stat.systemRevenue}</div>
                             </div>
                         ))
                     ) : (
-                        <div className="text-center text-white/60 py-8">No data available</div>
+                        <div className="admin-stats-empty">No data available</div>
                     )}
                 </div>
             </div>

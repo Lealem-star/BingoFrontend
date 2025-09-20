@@ -59,23 +59,23 @@ export default function AdminHome() {
     };
 
     return (
-        <div className="px-6 py-8 space-y-8">
+        <div className="admin-container">
             {/* Main Post Creation Area */}
-            <div className="bg-gradient-to-br from-white/8 to-white/4 backdrop-blur-sm rounded-3xl p-8 border border-white/15 shadow-2xl shadow-purple-500/10">
-                <h2 className="text-white text-2xl font-bold mb-8 text-center bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">What is in Your Mind?</h2>
+            <div className="admin-card">
+                <h2 className="admin-title">What is in Your Mind?</h2>
 
-                <form onSubmit={submit} className="space-y-6">
+                <form onSubmit={submit} className="admin-form">
                     {/* Upload File Section */}
-                    <div className="space-y-3">
-                        <label className="text-white/90 text-sm font-semibold flex items-center gap-2">
-                            <span className="text-amber-400">📁</span>
+                    <div className="admin-form-group">
+                        <label className="admin-label">
+                            <span>📁</span>
                             Upload {form.kind}
                         </label>
-                        <div className="flex gap-3">
+                        <div className="admin-input-group">
                             <select
                                 value={form.kind}
                                 onChange={e => setForm({ ...form, kind: e.target.value, file: null })}
-                                className="px-4 py-3 rounded-xl bg-white/12 text-white border border-white/25 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-400/50 transition-all duration-200 backdrop-blur-sm"
+                                className="admin-select"
                             >
                                 <option value="image">📷 Image</option>
                                 <option value="video">🎥 Video</option>
@@ -84,20 +84,20 @@ export default function AdminHome() {
                                 type="file"
                                 accept={form.kind === 'image' ? 'image/*' : 'video/*'}
                                 onChange={e => setForm({ ...form, file: e.target.files[0] })}
-                                className="flex-1 px-4 py-3 rounded-xl bg-white/12 text-white border border-white/25 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-400/50 transition-all duration-200 backdrop-blur-sm file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-medium file:bg-gradient-to-r file:from-amber-500 file:to-orange-500 file:text-white hover:file:from-amber-600 hover:file:to-orange-600"
+                                className="admin-file-input"
                             />
                         </div>
                         {form.file && (
-                            <div className="text-white/70 text-sm bg-white/5 rounded-lg px-3 py-2 border border-white/10">
+                            <div className="admin-file-selected">
                                 <span className="text-green-400">✓</span> Selected: {form.file.name} ({(form.file.size / 1024 / 1024).toFixed(2)} MB)
                             </div>
                         )}
                     </div>
 
                     {/* Write Your Message Section */}
-                    <div className="space-y-3">
-                        <label className="text-white/90 text-sm font-semibold flex items-center gap-2">
-                            <span className="text-amber-400">✍️</span>
+                    <div className="admin-form-group">
+                        <label className="admin-label">
+                            <span>✍️</span>
                             Write Your Message
                         </label>
                         <textarea
@@ -105,21 +105,21 @@ export default function AdminHome() {
                             onChange={e => setForm({ ...form, caption: e.target.value })}
                             placeholder="Write your announcement or message here..."
                             rows={4}
-                            className="w-full px-4 py-3 rounded-xl bg-white/12 text-white border border-white/25 placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-amber-500/50 focus:border-amber-400/50 resize-none transition-all duration-200 backdrop-blur-sm"
+                            className="admin-textarea"
                         />
                     </div>
 
                     {/* Active Toggle */}
-                    <div className="flex items-center gap-3 bg-white/5 rounded-xl p-4 border border-white/10">
+                    <div className="admin-checkbox-group">
                         <input
                             id="active"
                             type="checkbox"
                             checked={form.active}
                             onChange={e => setForm({ ...form, active: e.target.checked })}
-                            className="w-5 h-5 text-amber-500 bg-white/10 border-white/25 rounded-lg focus:ring-amber-500/50 focus:ring-2"
+                            className="admin-checkbox"
                         />
-                        <label htmlFor="active" className="text-white/90 text-sm font-medium flex items-center gap-2">
-                            <span className="text-green-400">🔘</span>
+                        <label htmlFor="active" className="admin-checkbox-label">
+                            <span>🔘</span>
                             Make this post active
                         </label>
                     </div>
@@ -128,15 +128,15 @@ export default function AdminHome() {
                     <button
                         type="submit"
                         disabled={uploading || !form.file}
-                        className="w-full bg-gradient-to-r from-amber-500 to-orange-500 text-white px-8 py-4 rounded-xl font-bold text-lg hover:from-amber-600 hover:to-orange-600 transition-all duration-300 shadow-xl shadow-amber-500/25 disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02] active:scale-[0.98]"
+                        className="admin-button"
                     >
                         {uploading ? (
-                            <span className="flex items-center justify-center gap-2">
-                                <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+                            <span className="admin-button-content">
+                                <div className="admin-spinner"></div>
                                 Uploading...
                             </span>
                         ) : (
-                            <span className="flex items-center justify-center gap-2">
+                            <span className="admin-button-content">
                                 <span>🚀</span>
                                 Post Announcement
                             </span>
@@ -146,43 +146,43 @@ export default function AdminHome() {
             </div>
 
             {/* Recent Posts */}
-            <div className="space-y-6">
-                <h3 className="text-white text-xl font-bold flex items-center gap-3">
-                    <span className="text-amber-400">📋</span>
+            <div className="admin-posts-section">
+                <h3 className="admin-section-title">
+                    <span>📋</span>
                     Recent Posts
                 </h3>
-                <div className="space-y-4">
+                <div className="admin-posts-list">
                     {posts.map(p => (
-                        <div key={p._id} className="p-6 rounded-2xl bg-gradient-to-br from-white/8 to-white/4 backdrop-blur-sm border border-white/15 shadow-lg hover:shadow-xl transition-all duration-300 text-white">
-                            <div className="flex justify-between items-start mb-4">
-                                <div className="font-bold text-amber-400 flex items-center gap-2">
+                        <div key={p._id} className="admin-post-card">
+                            <div className="admin-post-header">
+                                <div className="admin-post-type">
                                     <span>{p.kind === 'image' ? '📷' : '🎥'}</span>
                                     {p.kind.toUpperCase()}
                                 </div>
-                                <div className="opacity-70 text-sm bg-white/5 px-3 py-1 rounded-lg">
+                                <div className="admin-post-date">
                                     {new Date(p.createdAt).toLocaleString()}
                                 </div>
                             </div>
-                            <div className="truncate opacity-90 text-sm mb-3 bg-white/5 rounded-lg px-3 py-2 border border-white/10">
+                            <div className="admin-post-file">
                                 📁 {p.url || p.filename || 'File uploaded'}
                             </div>
                             {p.caption ? (
-                                <div className="opacity-80 text-sm mb-4 bg-white/5 rounded-lg px-3 py-2 border border-white/10">
+                                <div className="admin-post-caption">
                                     💬 {p.caption}
                                 </div>
                             ) : null}
-                            <div className="flex justify-between items-center">
-                                <span className={`text-xs px-3 py-2 rounded-full font-medium ${p.active ? 'bg-green-500/20 text-green-400 border border-green-400/30' : 'bg-gray-500/20 text-gray-400 border border-gray-400/30'}`}>
+                            <div className="admin-post-status">
+                                <span className={`admin-status-badge ${p.active ? 'admin-status-active' : 'admin-status-inactive'}`}>
                                     {p.active ? '✅ Active' : '⏸️ Inactive'}
                                 </span>
                             </div>
                         </div>
                     ))}
                     {posts.length === 0 && (
-                        <div className="text-center text-white/60 py-12 bg-white/5 rounded-2xl border border-white/10">
-                            <div className="text-4xl mb-4">📝</div>
-                            <div className="text-lg font-medium mb-2">No posts yet</div>
-                            <div className="text-sm">Create your first announcement!</div>
+                        <div className="admin-empty-state">
+                            <div className="admin-empty-icon">📝</div>
+                            <div className="admin-empty-title">No posts yet</div>
+                            <div className="admin-empty-subtitle">Create your first announcement!</div>
                         </div>
                     )}
                 </div>
