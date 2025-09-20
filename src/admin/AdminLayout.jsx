@@ -13,7 +13,7 @@ function AdminNav({ current, onNavigate }) {
     return (
         <div className="nav-wrap">
             <nav className="mx-auto max-w-md w-full">
-                <ul className="bottom-nav flex justify-between items-center list-none text-[12px] text-pink-200 px-6 py-3 rounded-2xl">
+                <ul className="bottom-nav flex items-center list-none text-[12px] text-pink-200 px-6 py-3 rounded-2xl">
                     {tabs.map((t, index) => (
                         <li key={t.key} className={`flex-1 ${index === 1 ? 'flex justify-center' : index === 2 ? 'flex justify-end' : 'flex justify-start'}`}>
                             <button
