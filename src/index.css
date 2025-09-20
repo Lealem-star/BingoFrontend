@@ -89,9 +89,7 @@ body {
 }
 
 .bottom-nav {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 16px;
+    display: flex;
     list-style: none;
     padding: 8px 12px;
     border-radius: 16px;
