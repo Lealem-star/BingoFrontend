@@ -32,7 +32,7 @@ export default function AdminStats() {
     }, []);
 
     return (
-        <div className="admin-stats-container">
+        <div className="admin-stats-container admin-stats-page">
             {/* Today's Stats Section */}
             <div className="admin-stats-grid">
                 <div className="admin-stats-card">

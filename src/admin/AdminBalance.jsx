@@ -26,7 +26,7 @@ export default function AdminBalance() {
     };
 
     return (
-        <div className="admin-balance-container">
+        <div className="admin-balance-container admin-balance-page">
             {/* Toggle Buttons */}
             <div className="admin-balance-toggle">
                 <button

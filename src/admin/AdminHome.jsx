@@ -2,13 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { apiFetch } from '../lib/api/client';
 
 export default function AdminHome() {
-    const [posts, setPosts] = useState([]);
+    const [currentPost, setCurrentPost] = useState(null);
     const [form, setForm] = useState({ kind: 'image', file: null, caption: '', active: true });
     const [uploading, setUploading] = useState(false);
+    const [deleting, setDeleting] = useState(false);
 
     const load = async () => {
         const data = await apiFetch('/admin/posts');
-        setPosts(data.posts || []);
+        const posts = data.posts || [];
+        // Find the currently active post
+        const activePost = posts.find(post => post.active === true);
+        setCurrentPost(activePost || null);
     };
 
     useEffect(() => { load(); }, []);
@@ -17,6 +21,12 @@ export default function AdminHome() {
         e.preventDefault();
         if (!form.file) {
             alert('Please select a file to upload');
+            return;
+        }
+
+        // Check if there's already an active post
+        if (currentPost) {
+            alert('Please delete the current active post before creating a new one.');
             return;
         }
 
@@ -55,6 +65,28 @@ export default function AdminHome() {
             alert(`Upload failed: ${error.message}. Please try again.`);
         } finally {
             setUploading(false);
+        }
+    };
+
+    const deleteCurrentPost = async () => {
+        if (!currentPost) return;
+
+        if (!confirm('Are you sure you want to delete the current active post?')) {
+            return;
+        }
+
+        setDeleting(true);
+        try {
+            await apiFetch(`/admin/posts/${currentPost._id}`, {
+                method: 'DELETE'
+            });
+            setCurrentPost(null);
+            load();
+        } catch (error) {
+            console.error('Delete failed:', error);
+            alert(`Delete failed: ${error.message}. Please try again.`);
+        } finally {
+            setDeleting(false);
         }
     };
 
@@ -146,43 +178,59 @@ export default function AdminHome() {
                 </form>
             </div>
 
-            {/* Recent Posts */}
+            {/* Current Active Post */}
             <div className="admin-posts-section">
                 <h3 className="admin-section-title">
                     <span>📋</span>
-                    Recent Posts
+                    Current Active Post
                 </h3>
                 <div className="admin-posts-list">
-                    {posts.map(p => (
-                        <div key={p._id} className="admin-post-card">
+                    {currentPost ? (
+                        <div className="admin-post-card">
                             <div className="admin-post-header">
                                 <div className="admin-post-type">
-                                    <span>{p.kind === 'image' ? '📷' : '🎥'}</span>
-                                    {p.kind.toUpperCase()}
+                                    <span>{currentPost.kind === 'image' ? '📷' : '🎥'}</span>
+                                    {currentPost.kind.toUpperCase()}
                                 </div>
                                 <div className="admin-post-date">
-                                    {new Date(p.createdAt).toLocaleString()}
+                                    {new Date(currentPost.createdAt).toLocaleString()}
                                 </div>
                             </div>
                             <div className="admin-post-file">
-                                📁 {p.url || p.filename || 'File uploaded'}
+                                📁 {currentPost.url || currentPost.filename || 'File uploaded'}
                             </div>
-                            {p.caption ? (
+                            {currentPost.caption ? (
                                 <div className="admin-post-caption">
-                                    💬 {p.caption}
+                                    💬 {currentPost.caption}
                                 </div>
                             ) : null}
-                            <div className="admin-post-status">
-                                <span className={`admin-status-badge ${p.active ? 'admin-status-active' : 'admin-status-inactive'}`}>
-                                    {p.active ? '✅ Active' : '⏸️ Inactive'}
+                            <div className="admin-post-actions">
+                                <span className="admin-status-badge admin-status-active">
+                                    ✅ Currently Active
                                 </span>
+                                <button
+                                    onClick={deleteCurrentPost}
+                                    disabled={deleting}
+                                    className="admin-delete-button"
+                                >
+                                    {deleting ? (
+                                        <span className="admin-button-content">
+                                            <div className="admin-spinner"></div>
+                                            Deleting...
+                                        </span>
+                                    ) : (
+                                        <span className="admin-button-content">
+                                            <span>🗑️</span>
+                                            Delete Post
+                                        </span>
+                                    )}
+                                </button>
                             </div>
                         </div>
-                    ))}
-                    {posts.length === 0 && (
+                    ) : (
                         <div className="admin-empty-state">
                             <div className="admin-empty-icon">📝</div>
-                            <div className="admin-empty-title">No posts yet</div>
+                            <div className="admin-empty-title">No active post</div>
                             <div className="admin-empty-subtitle">Create your first announcement!</div>
                         </div>
                     )}

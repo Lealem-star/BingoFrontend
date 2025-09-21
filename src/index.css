@@ -443,6 +443,43 @@ body {
     align-items: center;
 }
 
+.admin-post-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+}
+
+.admin-delete-button {
+    background: linear-gradient(to right, #ef4444, #dc2626);
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+    font-size: 0.875rem;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(239, 68, 68, 0.25);
+    transform: scale(1);
+}
+
+.admin-delete-button:hover {
+    background: linear-gradient(to right, #dc2626, #b91c1c);
+    transform: scale(1.05);
+}
+
+.admin-delete-button:active {
+    transform: scale(0.95);
+}
+
+.admin-delete-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: scale(1);
+}
+
 .admin-status-badge {
     font-size: 0.75rem;
     padding: 0.5rem 0.75rem;
@@ -517,7 +554,8 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow: visible;
+    /* Allow content to flow naturally */
 }
 
 .admin-file-input {
@@ -551,8 +589,49 @@ body {
 }
 
 .admin-home-container .admin-posts-section {
-    max-height: 50vh;
-    /* Limit posts section height */
+    /* Remove individual scrolling - let parent handle it */
+    max-height: none;
+    overflow: visible;
+}
+
+/* Balance Page overflow fixes */
+.admin-balance-page {
+    max-height: calc(100vh - 200px);
+    /* Account for header and bottom nav */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+}
+
+.admin-balance-page .admin-card {
+    margin-bottom: 1rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.admin-balance-page .admin-table-content {
+    max-height: 40vh;
+    /* Limit table content height */
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+/* Stats Page overflow fixes */
+.admin-stats-page {
+    max-height: calc(100vh - 200px);
+    /* Account for header and bottom nav */
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+}
+
+.admin-stats-page .admin-stats-table-content {
+    max-height: 40vh;
+    /* Limit table content height */
     overflow-y: auto;
     overflow-x: hidden;
 }
