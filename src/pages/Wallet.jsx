@@ -17,11 +17,18 @@ export default function Wallet({ onNavigate }) {
     // Fetch wallet and profile data once
     useEffect(() => {
         if (!sessionId) {
+            setLoading(false);
             return;
         }
         const fetchData = async () => {
             try {
                 setLoading(true);
+
+                // Add timeout to prevent infinite loading
+                const timeoutId = setTimeout(() => {
+                    setLoading(false);
+                }, 10000); // 10 second timeout
+
                 // Always hydrate latest profile to reflect DB phone/registration
                 try {
                     const profile = await apiFetch('/user/profile', { sessionId });
@@ -33,6 +40,7 @@ export default function Wallet({ onNavigate }) {
                 }
                 const walletData = await apiFetch('/wallet', { sessionId });
                 setWallet(walletData);
+                clearTimeout(timeoutId);
             } catch (error) {
                 console.error('Failed to fetch wallet data:', error);
             } finally {

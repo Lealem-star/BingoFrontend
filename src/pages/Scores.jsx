@@ -43,10 +43,19 @@ export default function Scores({ onNavigate }) {
     };
 
     useEffect(() => {
-        if (!sessionId) return;
+        if (!sessionId) {
+            setLoading(false);
+            return;
+        }
         const fetchUserStats = async () => {
             try {
                 setLoading(true);
+
+                // Add timeout to prevent infinite loading
+                const timeoutId = setTimeout(() => {
+                    setLoading(false);
+                }, 10000); // 10 second timeout
+
                 const data = await apiFetch('/user/profile', { sessionId });
                 const stats = data.user;
                 setUserStats({
@@ -55,6 +64,7 @@ export default function Scores({ onNavigate }) {
                     totalWinnings: stats.totalWinnings || 0,
                     winRate: stats.totalGamesPlayed > 0 ? Math.round((stats.totalGamesWon / stats.totalGamesPlayed) * 100) : 0
                 });
+                clearTimeout(timeoutId);
             } catch (error) {
                 console.error('Failed to fetch user stats:', error);
             } finally {

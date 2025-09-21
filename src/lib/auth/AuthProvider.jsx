@@ -243,7 +243,7 @@ export function AuthProvider({ children }) {
                 setIsLoading(false);
             }
         })();
-    }, [sessionId, user]);
+    }, []); // Remove sessionId and user dependencies to prevent infinite loops
 
     const value = useMemo(() => ({ sessionId, user, setSessionId, isLoading }), [sessionId, user, isLoading]);
 

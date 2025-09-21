@@ -2972,9 +2972,11 @@ body {
 
 .profile-loading {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 3rem 0;
+    gap: 1rem;
 }
 
 .profile-spinner {
@@ -2984,6 +2986,12 @@ body {
     border-top: 2px solid #f472b6;
     border-radius: 50%;
     animation: spin 1s linear infinite;
+}
+
+.profile-loading-text {
+    color: #cbd5e1;
+    font-size: 0.875rem;
+    text-align: center;
 }
 
 .profile-error {

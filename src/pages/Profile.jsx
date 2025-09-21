@@ -38,7 +38,15 @@ export default function Profile({ onNavigate }) {
             try {
                 setLoading(true);
                 setError(null);
+
+                // Add timeout to prevent infinite loading
+                const timeoutId = setTimeout(() => {
+                    setLoading(false);
+                    setError('Request timeout - please try again');
+                }, 10000); // 10 second timeout
+
                 const data = await apiFetch('/user/profile', { sessionId });
+                clearTimeout(timeoutId);
                 setProfileData(data);
             } catch (error) {
                 console.error('Failed to fetch profile data:', error);
@@ -72,6 +80,7 @@ export default function Profile({ onNavigate }) {
                 {loading ? (
                     <div className="profile-loading">
                         <div className="profile-spinner"></div>
+                        <div className="profile-loading-text">Loading profile...</div>
                     </div>
                 ) : error ? (
                     <div className="profile-error">
