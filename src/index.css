@@ -82,8 +82,6 @@ body {
     -webkit-backdrop-filter: blur(8px);
     width: 100%;
     box-sizing: border-box;
-    /* Ensure it stays above system UI */
-    padding-bottom: max(12px, env(safe-area-inset-bottom));
 }
 
 .nav-wrap nav {
@@ -94,9 +92,8 @@ body {
 }
 
 .bottom-nav {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1.25rem;
+    display: flex;
+    justify-content: space-between;
     list-style: none;
     padding: 8px 12px;
     border-radius: 16px;
@@ -107,9 +104,22 @@ body {
 }
 
 .bottom-nav li {
+    flex: 1;
     display: flex;
+    min-width: 0;
+    /* Prevent flex items from growing beyond container */
+}
+
+.bottom-nav li:first-child {
+    justify-content: flex-start;
+}
+
+.bottom-nav li:nth-child(2) {
     justify-content: center;
-    align-items: center;
+}
+
+.bottom-nav li:last-child {
+    justify-content: flex-end;
 }
 
 /* Zoom-resistant navigation */
