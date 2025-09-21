@@ -59,7 +59,7 @@ export default function AdminHome() {
     };
 
     return (
-        <div className="admin-container">
+        <div className="admin-container admin-home-container">
             {/* Main Post Creation Area */}
             <div className="admin-card">
                 <h2 className="admin-title">What is in Your Mind?</h2>
