@@ -19,6 +19,9 @@ export default function Wallet({ onNavigate }) {
     const [transferDirection, setTransferDirection] = useState('main-to-play'); // 'main-to-play' or 'play-to-main'
     const [transferLoading, setTransferLoading] = useState(false);
 
+    // Quick transfer functionality
+    const [quickTransferLoading, setQuickTransferLoading] = useState(false);
+
     // Fetch wallet and profile data once
     useEffect(() => {
         if (!sessionId) {
@@ -34,17 +37,31 @@ export default function Wallet({ onNavigate }) {
                     setLoading(false);
                 }, 10000); // 10 second timeout
 
-                // Always hydrate latest profile to reflect DB phone/registration
+                // Fetch profile data which includes wallet information
                 try {
                     const profile = await apiFetch('/user/profile', { sessionId });
                     setProfileData(profile);
                     setDisplayPhone(profile?.user?.phone || null);
                     setDisplayRegistered(!!profile?.user?.isRegistered);
+
+                    // Extract wallet data from profile response
+                    if (profile?.wallet) {
+                        setWallet({
+                            main: profile.wallet.main || 0,
+                            play: profile.wallet.play || 0,
+                            coins: profile.wallet.coins || 0
+                        });
+                    }
                 } catch (e) {
                     console.error('Profile fetch error:', e);
+                    // Fallback to direct wallet fetch if profile fails
+                    try {
+                        const walletData = await apiFetch('/wallet', { sessionId });
+                        setWallet(walletData);
+                    } catch (walletError) {
+                        console.error('Wallet fetch error:', walletError);
+                    }
                 }
-                const walletData = await apiFetch('/wallet', { sessionId });
-                setWallet(walletData);
                 clearTimeout(timeoutId);
             } catch (error) {
                 console.error('Failed to fetch wallet data:', error);
@@ -75,10 +92,26 @@ export default function Wallet({ onNavigate }) {
         const amt = Number(coins || 0);
         if (!amt) return;
         try {
-            const out = await apiFetch('/wallet/convert', { method: 'POST', body: { coins: amt }, sessionId });
+            // Convert coins to Birr and add to Play Wallet
+            const out = await apiFetch('/wallet/convert', {
+                method: 'POST',
+                body: {
+                    coins: amt,
+                    targetWallet: 'play' // Add to Play Wallet instead of Main
+                },
+                sessionId
+            });
             setWallet(out.wallet);
             setCoins('');
-        } catch { }
+            // Refresh transactions if on history tab
+            if (activeTab === 'history') {
+                const transactionData = await apiFetch('/user/transactions', { sessionId });
+                setTransactions(transactionData.transactions || []);
+            }
+        } catch (error) {
+            console.error('Coin conversion failed:', error);
+            alert('Coin conversion failed. Please try again.');
+        }
     };
 
     const transferFunds = async () => {
@@ -110,6 +143,39 @@ export default function Wallet({ onNavigate }) {
             setTransferLoading(false);
         }
     };
+
+    // Quick transfer function for circular icons - transfers entire balance immediately
+    const quickTransfer = async (direction) => {
+        if (!sessionId) return;
+
+        // Get the source wallet balance
+        const sourceBalance = direction === 'main-to-play' ? wallet.main : wallet.play;
+        if (!sourceBalance || sourceBalance <= 0) {
+            return; // No funds available, do nothing
+        }
+
+        try {
+            setQuickTransferLoading(true);
+            const out = await apiFetch('/wallet/transfer', {
+                method: 'POST',
+                body: {
+                    amount: sourceBalance,
+                    direction: direction
+                },
+                sessionId
+            });
+            setWallet(out.wallet);
+            // Refresh transactions if on history tab
+            if (activeTab === 'history') {
+                const transactionData = await apiFetch('/user/transactions', { sessionId });
+                setTransactions(transactionData.transactions || []);
+            }
+        } catch (error) {
+            console.error('Quick transfer failed:', error);
+        } finally {
+            setQuickTransferLoading(false);
+        }
+    };
     return (
         <div className="wallet-page">
             {/* Header */}
@@ -127,7 +193,7 @@ export default function Wallet({ onNavigate }) {
                             <div className="wallet-user-icon">👤</div>
                             <div className="wallet-user-text">
                                 <span className="wallet-user-name">
-                                    {displayPhone || profileData?.user?.firstName || user?.firstName || 'Player'}
+                                    {profileData?.user?.firstName || user?.firstName || 'Player'}
                                 </span>
                                 {displayPhone && (
                                     <span className="wallet-user-phone">{displayPhone}</span>
@@ -183,6 +249,19 @@ export default function Wallet({ onNavigate }) {
                             <div className="wallet-card-description">
                                 Primary account balance for deposits, withdrawals, and transfers
                             </div>
+                            {/* Quick Transfer Icon */}
+                            <button
+                                onClick={() => quickTransfer('main-to-play')}
+                                disabled={quickTransferLoading || !wallet.main || wallet.main <= 0}
+                                className="wallet-transfer-icon wallet-transfer-icon-main"
+                                title="Transfer to Play Wallet"
+                            >
+                                {quickTransferLoading ? (
+                                    <div className="wallet-transfer-spinner"></div>
+                                ) : (
+                                    <span className="wallet-transfer-arrow">→</span>
+                                )}
+                            </button>
                         </div>
 
                         {/* Play Wallet */}
@@ -197,6 +276,19 @@ export default function Wallet({ onNavigate }) {
                             <div className="wallet-card-description">
                                 Funds used for bingo games, purchasing cards, and betting
                             </div>
+                            {/* Quick Transfer Icon */}
+                            <button
+                                onClick={() => quickTransfer('play-to-main')}
+                                disabled={quickTransferLoading || !wallet.play || wallet.play <= 0}
+                                className="wallet-transfer-icon wallet-transfer-icon-play"
+                                title="Transfer to Main Wallet"
+                            >
+                                {quickTransferLoading ? (
+                                    <div className="wallet-transfer-spinner"></div>
+                                ) : (
+                                    <span className="wallet-transfer-arrow">←</span>
+                                )}
+                            </button>
                         </div>
 
                         {/* Coins */}
@@ -289,20 +381,23 @@ export default function Wallet({ onNavigate }) {
                 {/* Convert Section - show only on Balance tab */}
                 {activeTab === 'balance' && (
                     <div className="wallet-convert">
-                        <h3 className="wallet-convert-title">Convert Coins</h3>
+                        <h3 className="wallet-convert-title">Convert Coins to Birr</h3>
+                        <div className="wallet-convert-description">
+                            Convert your earned coins to Birr and add to your Play Wallet for gaming
+                        </div>
                         <div className="wallet-convert-controls">
                             <input
                                 value={coins}
                                 onChange={(e) => setCoins(e.target.value)}
                                 className="wallet-convert-input"
-                                placeholder="Enter coins to convert"
+                                placeholder="Enter coins to convert to Birr"
                             />
                             <button
                                 onClick={convert}
                                 className="wallet-convert-button"
                             >
-                                <span>↓</span>
-                                <span>Convert Coin</span>
+                                <span>🪙→💰</span>
+                                <span>Convert to Play Wallet</span>
                             </button>
                         </div>
                     </div>
