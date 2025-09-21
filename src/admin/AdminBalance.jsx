@@ -27,29 +27,30 @@ export default function AdminBalance() {
 
     return (
         <div className="admin-balance-container">
+            {/* Toggle Buttons */}
+            <div className="admin-balance-toggle">
+                <button
+                    onClick={() => setActiveTab('deposit')}
+                    className={`admin-balance-button ${activeTab === 'deposit' ? 'admin-balance-button-active' : 'admin-balance-button-inactive'}`}
+                >
+                    <span>💰</span>
+                    <span>Deposit</span>
+                </button>
+
+                <div className="admin-balance-center">
+                </div>
+
+                <button
+                    onClick={() => setActiveTab('withdraw')}
+                    className={`admin-balance-button ${activeTab === 'withdraw' ? 'admin-balance-button-active' : 'admin-balance-button-inactive'}`}
+                >
+                    <span>💸</span>
+                    <span>Withdraw</span>
+                </button>
+            </div>
+
             {/* Main Content Area */}
             <div className="admin-card">
-                {/* Toggle Buttons */}
-                <div className="admin-balance-toggle">
-                    <button
-                        onClick={() => setActiveTab('deposit')}
-                        className={`admin-balance-button ${activeTab === 'deposit' ? 'admin-balance-button-active' : 'admin-balance-button-inactive'}`}
-                    >
-                        <span>💰</span>
-                        <span>Deposit</span>
-                    </button>
-
-                    <div className="admin-balance-center">
-                    </div>
-
-                    <button
-                        onClick={() => setActiveTab('withdraw')}
-                        className={`admin-balance-button ${activeTab === 'withdraw' ? 'admin-balance-button-active' : 'admin-balance-button-inactive'}`}
-                    >
-                        <span>💸</span>
-                        <span>Withdraw</span>
-                    </button>
-                </div>
 
                 {/* Table Header */}
                 <div className="admin-table-header">
