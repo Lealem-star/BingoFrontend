@@ -199,16 +199,6 @@ export default function AdminLayout({ onNavigate }) {
                         <span className="app-title">Admin</span>
                     </div>
                     <div className="flex items-center gap-2">
-                        {userProfile && (
-                            <div className="text-white/80 text-sm">
-                                <span className={`px-2 py-1 rounded-full text-xs ${(userProfile.user?.role || userProfile.role) === 'super_admin'
-                                    ? 'bg-red-500/20 text-red-400'
-                                    : 'bg-amber-500/20 text-amber-400'
-                                    }`}>
-                                    {(userProfile.user?.role || userProfile.role) === 'super_admin' ? 'Super Admin' : 'Admin'}
-                                </span>
-                            </div>
-                        )}
                         <button
                             className="rules-button"
                             onClick={() => {

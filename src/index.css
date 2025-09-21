@@ -513,6 +513,19 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
+    width: 100%;
+}
+
+.admin-balance-toggle .admin-balance-button:first-child {
+    margin-right: auto;
+}
+
+.admin-balance-toggle .admin-balance-button:last-child {
+    margin-left: auto;
+}
+
+.admin-balance-toggle .admin-balance-center {
+    display: none;
 }
 
 .admin-balance-button {
