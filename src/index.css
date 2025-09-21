@@ -514,6 +514,40 @@ body {
 
 .admin-home-container .admin-card {
     margin-bottom: 1rem;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.admin-file-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border-radius: 0.75rem;
+    background: rgba(255, 255, 255, 0.12);
+    color: transparent !important;
+    /* Hide the "No file chosen" text */
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    outline: none;
+    transition: all 0.2s;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    cursor: pointer;
+}
+
+.admin-file-input::file-selector-button {
+    background: linear-gradient(to right, #f59e0b, #f97316);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    margin-right: 0.5rem;
+}
+
+.admin-file-input::file-selector-button:hover {
+    background: linear-gradient(to right, #d97706, #ea580c);
 }
 
 .admin-home-container .admin-posts-section {
@@ -539,18 +573,26 @@ body {
     align-items: center;
     margin-bottom: 2rem;
     width: 100%;
+    gap: 2rem;
+    /* Add space between buttons */
 }
 
 .admin-balance-toggle .admin-balance-button:first-child {
-    margin-right: auto;
+    flex: 0 0 auto;
+    /* Don't grow or shrink */
 }
 
 .admin-balance-toggle .admin-balance-button:last-child {
-    margin-left: auto;
+    flex: 0 0 auto;
+    /* Don't grow or shrink */
 }
 
 .admin-balance-toggle .admin-balance-center {
-    display: none;
+    flex: 1;
+    /* Take up remaining space */
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .admin-balance-button {

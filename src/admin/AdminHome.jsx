@@ -85,6 +85,7 @@ export default function AdminHome() {
                                 accept={form.kind === 'image' ? 'image/*' : 'video/*'}
                                 onChange={e => setForm({ ...form, file: e.target.files[0] })}
                                 className="admin-file-input"
+                                style={{ color: 'transparent' }}
                             />
                         </div>
                         {form.file && (
