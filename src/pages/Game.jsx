@@ -24,7 +24,6 @@ export default function Game({ onNavigate, onStakeSelected, selectedCartela, sel
     const [profile, setProfile] = useState(null);
     const [wallet, setWallet] = useState({ balance: 0, coins: 0, gamesWon: 0 });
     const [adminPost, setAdminPost] = useState(null);
-    const [hidePost, setHidePost] = useState(false);
 
     // Update stake when selectedStake prop changes
     useEffect(() => {
@@ -173,22 +172,11 @@ export default function Game({ onNavigate, onStakeSelected, selectedCartela, sel
                 const active = posts.filter(p => p.active);
                 if (!cancelled && active.length) {
                     setAdminPost(active[0]);
-                    try {
-                        const dismissedId = localStorage.getItem('dismissedPostId');
-                        if (dismissedId && dismissedId === String(active[0]._id || '')) {
-                            setHidePost(true);
-                        }
-                    } catch { }
                 }
             } catch (_) { }
         })();
         return () => { cancelled = true; };
     }, []);
-
-    const dismissPost = () => {
-        setHidePost(true);
-        try { if (adminPost?._id) localStorage.setItem('dismissedPostId', String(adminPost._id)); } catch { }
-    };
 
     // Fetch wallet balance so GameLayout can determine play vs watch
     useEffect(() => {
@@ -239,22 +227,6 @@ export default function Game({ onNavigate, onStakeSelected, selectedCartela, sel
                     <h1 className="text-center text-3xl md:text-4xl font-extrabold leading-tight mt-6 text-white">
                         Welcome to Love Bingo
                     </h1>
-                    {/* Identity summary removed as requested */}
-                    {!hidePost && adminPost && (
-                        <div className="mt-4 mx-auto max-w-md">
-                            <div className="rounded-2xl overflow-hidden ring-1 ring-white/10 bg-white/5 shadow-lg relative">
-                                <button onClick={dismissPost} className="absolute top-2 right-2 text-white/80 bg-black/40 rounded-full w-7 h-7 grid place-items-center">×</button>
-                                {adminPost.kind === 'image' ? (
-                                    <img src={adminPost.url} alt={adminPost.caption || 'Announcement'} className="w-full h-48 object-cover" />
-                                ) : (
-                                    <video src={adminPost.url} className="w-full h-48 object-cover" controls muted playsInline />
-                                )}
-                                {adminPost.caption ? (
-                                    <div className="p-3 text-white text-sm bg-black/30">{adminPost.caption}</div>
-                                ) : null}
-                            </div>
-                        </div>
-                    )}
                 </header>
 
                 <main className="p-4 space-y-4">
@@ -274,6 +246,34 @@ export default function Game({ onNavigate, onStakeSelected, selectedCartela, sel
                             </button>
                         </div>
                     </div>
+
+                    {/* Admin Announcement - Always visible under stake card */}
+                    {adminPost && (
+                        <div className="mx-auto max-w-md w-full px-2">
+                            <div className="rounded-2xl overflow-hidden ring-1 ring-white/10 bg-white/5 shadow-lg">
+                                {adminPost.kind === 'image' ? (
+                                    <img
+                                        src={adminPost.url}
+                                        alt={adminPost.caption || 'Announcement'}
+                                        className="w-full h-32 sm:h-40 md:h-48 object-cover"
+                                    />
+                                ) : (
+                                    <video
+                                        src={adminPost.url}
+                                        className="w-full h-32 sm:h-40 md:h-48 object-cover"
+                                        controls
+                                        muted
+                                        playsInline
+                                    />
+                                )}
+                                {adminPost.caption ? (
+                                    <div className="p-2 sm:p-3 text-white text-xs sm:text-sm bg-black/30">
+                                        {adminPost.caption}
+                                    </div>
+                                ) : null}
+                            </div>
+                        </div>
+                    )}
 
                     <StatsPanel />
                 </main>

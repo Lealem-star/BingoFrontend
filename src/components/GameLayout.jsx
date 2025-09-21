@@ -172,44 +172,50 @@ export default function GameLayout({
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
-            <div className="max-w-md mx-auto px-3 py-3">
-                {/* Top Information Bar - Cartella Selection style */}
-                <div className="flex items-stretch gap-2 p-2 rounded-xl bg-purple-800/20 ring-1 ring-white/10 shadow-lg shadow-black/20 backdrop-blur-sm">
-                    <div className="wallet-box flex-1">
-                        <div className="wallet-label">Game ID</div>
-                        <div className="wallet-value">{gameIdRef.current}</div>
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900 relative overflow-hidden">
+            {/* Animated background elements */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+                <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-pink-500/20 to-purple-600/20 rounded-full blur-3xl animate-pulse"></div>
+                <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-tr from-blue-500/20 to-purple-600/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
+            </div>
+
+            <div className="max-w-md mx-auto px-3 py-3 relative z-10">
+                {/* Enhanced Top Information Bar */}
+                <div className="flex items-stretch gap-2 p-3 rounded-2xl bg-gradient-to-r from-purple-800/30 to-purple-900/30 ring-1 ring-white/20 shadow-2xl shadow-purple-900/20 backdrop-blur-md border border-white/10">
+                    <div className="wallet-box flex-1 group">
+                        <div className="wallet-label text-xs opacity-80">Game ID</div>
+                        <div className="wallet-value text-sm font-bold text-yellow-300">{gameIdRef.current}</div>
                     </div>
-                    <div className="wallet-box flex-1">
-                        <div className="wallet-label">Players</div>
-                        <div className="wallet-value">{playersCount}</div>
+                    <div className="wallet-box flex-1 group">
+                        <div className="wallet-label text-xs opacity-80">Players</div>
+                        <div className="wallet-value text-sm font-bold text-green-300">{playersCount}</div>
                     </div>
-                    <div className="wallet-box flex-1">
-                        <div className="wallet-label">Bet</div>
-                        <div className="wallet-value">{stake}</div>
+                    <div className="wallet-box flex-1 group">
+                        <div className="wallet-label text-xs opacity-80">Bet</div>
+                        <div className="wallet-value text-sm font-bold text-blue-300">ETB {stake}</div>
                     </div>
-                    <div className="wallet-box flex-1">
-                        <div className="wallet-label">Derash</div>
-                        <div className="wallet-value">{derashAmount}</div>
+                    <div className="wallet-box flex-1 group">
+                        <div className="wallet-label text-xs opacity-80">Prize</div>
+                        <div className="wallet-value text-sm font-bold text-orange-300">ETB {derashAmount}</div>
                     </div>
-                    <div className="wallet-box flex-1">
-                        <div className="wallet-label">Called</div>
-                        <div className="wallet-value">{called.length}</div>
+                    <div className="wallet-box flex-1 group">
+                        <div className="wallet-label text-xs opacity-80">Called</div>
+                        <div className="wallet-value text-sm font-bold text-pink-300">{called.length}/75</div>
                     </div>
                 </div>
 
-                {/* Main Content Area - 2 Column Layout (Left grid, Right stacked) */}
-                <div className="grid grid-cols-2 p-2 gap-3">
-                    {/* Left Card - Complete BINGO Grid */}
-                    <div className="rounded-xl p-3 bg-gradient-to-br from-purple-900/60 to-slate-900/40 ring-1 ring-white/10 shadow-lg shadow-black/20">
+                {/* Main Content Area - Enhanced 2 Column Layout */}
+                <div className="grid grid-cols-2 p-2 gap-3 mt-4">
+                    {/* Left Card - Enhanced BINGO Grid */}
+                    <div className="rounded-2xl p-4 bg-gradient-to-br from-purple-900/70 to-slate-900/50 ring-1 ring-white/20 shadow-2xl shadow-purple-900/30 backdrop-blur-md border border-white/10">
                         <div className="grid grid-cols-5 gap-1">
                             {/* B Column */}
                             <div className="space-y-0.5">
-                                <div className="cartela-letter bg-blue-600">B</div>
+                                <div className="cartela-letter bg-gradient-to-b from-blue-500 to-blue-600 text-white font-bold text-center py-2 rounded-lg shadow-lg">B</div>
                                 {Array.from({ length: 15 }, (_, i) => i + 1).map(n => (
                                     <button
                                         key={n}
-                                        className={`cartela-number-btn text-[11px] leading-none ${called.includes(n) ? 'cartela-number-btn-selected' : ''} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-[1.02]' : ''}`}
+                                        className={`cartela-number-btn text-[10px] leading-none transition-all duration-200 ${called.includes(n) ? 'cartela-number-btn-selected bg-gradient-to-b from-red-500 to-red-600 text-white shadow-lg scale-105' : 'bg-gradient-to-b from-slate-700/80 to-slate-800/80 text-slate-200 hover:from-blue-400/30 hover:to-blue-500/30'} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-110 shadow-[0_0_20px_rgba(251,191,36,0.6)]' : ''}`}
                                     >
                                         {n}
                                     </button>
@@ -217,11 +223,11 @@ export default function GameLayout({
                             </div>
                             {/* I Column */}
                             <div className="space-y-0.5">
-                                <div className="cartela-letter bg-purple-600">I</div>
+                                <div className="cartela-letter bg-gradient-to-b from-purple-500 to-purple-600 text-white font-bold text-center py-2 rounded-lg shadow-lg">I</div>
                                 {Array.from({ length: 15 }, (_, i) => i + 16).map(n => (
                                     <button
                                         key={n}
-                                        className={`cartela-number-btn text-[11px] leading-none ${called.includes(n) ? 'cartela-number-btn-selected' : ''} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-[1.02]' : ''}`}
+                                        className={`cartela-number-btn text-[10px] leading-none transition-all duration-200 ${called.includes(n) ? 'cartela-number-btn-selected bg-gradient-to-b from-red-500 to-red-600 text-white shadow-lg scale-105' : 'bg-gradient-to-b from-slate-700/80 to-slate-800/80 text-slate-200 hover:from-purple-400/30 hover:to-purple-500/30'} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-110 shadow-[0_0_20px_rgba(251,191,36,0.6)]' : ''}`}
                                     >
                                         {n}
                                     </button>
@@ -229,11 +235,11 @@ export default function GameLayout({
                             </div>
                             {/* N Column */}
                             <div className="space-y-0.5">
-                                <div className="cartela-letter bg-green-600">N</div>
+                                <div className="cartela-letter bg-gradient-to-b from-green-500 to-green-600 text-white font-bold text-center py-2 rounded-lg shadow-lg">N</div>
                                 {Array.from({ length: 15 }, (_, i) => i + 31).map(n => (
                                     <button
                                         key={n}
-                                        className={`cartela-number-btn text-[11px] leading-none ${called.includes(n) ? 'cartela-number-btn-selected' : ''} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-[1.02]' : ''}`}
+                                        className={`cartela-number-btn text-[10px] leading-none transition-all duration-200 ${called.includes(n) ? 'cartela-number-btn-selected bg-gradient-to-b from-red-500 to-red-600 text-white shadow-lg scale-105' : 'bg-gradient-to-b from-slate-700/80 to-slate-800/80 text-slate-200 hover:from-green-400/30 hover:to-green-500/30'} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-110 shadow-[0_0_20px_rgba(251,191,36,0.6)]' : ''}`}
                                     >
                                         {n}
                                     </button>
@@ -241,11 +247,11 @@ export default function GameLayout({
                             </div>
                             {/* G Column */}
                             <div className="space-y-0.5">
-                                <div className="cartela-letter bg-orange-600">G</div>
+                                <div className="cartela-letter bg-gradient-to-b from-orange-500 to-orange-600 text-white font-bold text-center py-2 rounded-lg shadow-lg">G</div>
                                 {Array.from({ length: 15 }, (_, i) => i + 46).map(n => (
                                     <button
                                         key={n}
-                                        className={`cartela-number-btn text-[11px] leading-none ${called.includes(n) ? 'cartela-number-btn-selected' : ''} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-[1.02]' : ''}`}
+                                        className={`cartela-number-btn text-[10px] leading-none transition-all duration-200 ${called.includes(n) ? 'cartela-number-btn-selected bg-gradient-to-b from-red-500 to-red-600 text-white shadow-lg scale-105' : 'bg-gradient-to-b from-slate-700/80 to-slate-800/80 text-slate-200 hover:from-orange-400/30 hover:to-orange-500/30'} ${n === currentCalledNumber ? 'ring-2 ring-yellow-300 animate-pulse animate-pop scale-110 shadow-[0_0_20px_rgba(251,191,36,0.6)]' : ''}`}
                                     >
                                         {n}
                                     </button>
@@ -253,11 +259,11 @@ export default function GameLayout({
                             </div>
                             {/* O Column */}
                             <div className="space-y-0.5">
-                                <div className="cartela-letter bg-red-600">O</div>
+                                <div className="cartela-letter bg-gradient-to-b from-red-500 to-red-600 text-white font-bold text-center py-2 rounded-lg shadow-lg">O</div>
                                 {Array.from({ length: 15 }, (_, i) => i + 61).map(n => (
                                     <button
                                         key={n}
-                                        className={`cartela-number-btn text-[11px] leading-none ${called.includes(n) ? 'cartela-number-btn-selected' : ''} ${n === currentCalledNumber ? 'ring-2 ring-green-300 animate-pulse animate-pop scale-[1.02]' : ''}`}
+                                        className={`cartela-number-btn text-[10px] leading-none transition-all duration-200 ${called.includes(n) ? 'cartela-number-btn-selected bg-gradient-to-b from-red-500 to-red-600 text-white shadow-lg scale-105' : 'bg-gradient-to-b from-slate-700/80 to-slate-800/80 text-slate-200 hover:from-red-400/30 hover:to-red-500/30'} ${n === currentCalledNumber ? 'ring-2 ring-green-300 animate-pulse animate-pop scale-110 shadow-[0_0_20px_rgba(34,197,94,0.6)]' : ''}`}
                                     >
                                         {n}
                                     </button>
@@ -271,58 +277,63 @@ export default function GameLayout({
 
 
 
-                    {/* Right Side - Two Cards Stacked */}
+                    {/* Right Side - Enhanced Two Cards Stacked */}
                     <div className="space-y-3">
-                        {/* Right Top Card - Game Status */}
-                        <div className="relative rounded-xl p-3 bg-gradient-to-br from-purple-900/60 to-slate-900/40 ring-1 ring-white/10 shadow-xl shadow-pink-500/10 backdrop-blur-sm overflow-hidden">
+                        {/* Right Top Card - Enhanced Game Status */}
+                        <div className="relative rounded-2xl p-4 bg-gradient-to-br from-purple-900/70 to-slate-900/50 ring-1 ring-white/20 shadow-2xl shadow-pink-500/20 backdrop-blur-md overflow-hidden border border-white/10">
                             <div className="shimmer-overlay"></div>
-                            {/* Game Status Header */}
+                            {/* Compact Game Status Header */}
                             <div className="flex items-center justify-between mb-2">
                                 {showReadyMessage ? (
-                                    <div className="flex items-center gap-2 w-full mr-2">
-                                        <div className="flex gap-1">
-                                            <div className="w-2.5 h-2.5 bg-pink-400 rounded-full animate-pulse"></div>
-                                            <div className="w-2.5 h-2.5 bg-purple-400 rounded-full animate-pulse"></div>
-                                            <div className="w-2.5 h-2.5 bg-amber-300 rounded-full animate-pulse"></div>
+                                    <div className="flex items-center gap-1.5 w-full mr-2">
+                                        <div className="flex gap-0.5">
+                                            <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full animate-pulse shadow-md"></div>
+                                            <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full animate-pulse shadow-md"></div>
+                                            <div className="w-2 h-2 bg-gradient-to-r from-amber-300 to-yellow-400 rounded-full animate-pulse shadow-md"></div>
                                         </div>
-                                        <div className="flex-1 h-3 bg-white/10 rounded-full border border-white/15 overflow-hidden">
-                                            <div className="h-full w-3/4 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 animate-pulse"></div>
+                                        <div className="flex-1 h-3 bg-gradient-to-r from-white/10 to-white/5 rounded-full border border-white/20 overflow-hidden shadow-inner">
+                                            <div className="h-full w-3/4 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 animate-pulse shadow-md"></div>
                                         </div>
                                     </div>
                                 ) : (
-                                    <div className="flex items-center gap-1 bg-white/10 rounded-full px-2 py-1 border border-white/15 shadow-lg shadow-black/30">
+                                    <div className="flex items-center gap-0.5 bg-gradient-to-r from-white/15 to-white/5 rounded-full px-2 py-1.5 border border-white/20 shadow-md shadow-black/30 backdrop-blur-sm">
                                         {recentCalledNumbers.map((num, idx) => {
                                             const letter = getLetterForNumber(num);
                                             return (
-                                                <div key={`${num}-${idx}`} className={`text-white text-[11px] font-bold px-2 py-1 rounded-full ${chipBgForLetter(letter)} shadow-md ring-1 ring-white/10`}>{`${letter}-${num}`}</div>
+                                                <div key={`${num}-${idx}`} className={`text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ${chipBgForLetter(letter)} shadow-sm ring-1 ring-white/20 animate-pop`}>{`${letter}-${num}`}</div>
                                             );
                                         })}
                                     </div>
                                 )}
-                                <button onClick={toggleAudio} aria-pressed={isAudioOn} className={`text-white text-sm w-8 h-8 grid place-items-center rounded-full border ${isAudioOn ? 'bg-green-600/30 border-green-400/40' : 'bg-white/10 border-white/20'}`}>
+                                <button onClick={toggleAudio} aria-pressed={isAudioOn} className={`text-white text-xs w-7 h-7 grid place-items-center rounded-full border transition-all duration-200 ${isAudioOn ? 'bg-gradient-to-br from-green-500/40 to-green-600/40 border-green-400/50 shadow-md shadow-green-500/20' : 'bg-white/10 border-white/20 hover:bg-white/20'}`}>
                                     {isAudioOn ? '🔊' : '🔈'}
                                 </button>
                             </div>
 
-                            {/* Game Message or Called Numbers */}
+                            {/* Compact Game Message */}
                             {showReadyMessage ? (
-                                <div className="text-white font-semibold mb-3 text-center text-sm">Get ready for the next number!</div>
+                                <div className="text-white font-semibold mb-2 text-center text-xs bg-gradient-to-r from-amber-400/20 to-pink-500/20 rounded-md py-1.5 px-2 border border-white/10">
+                                    🎯 Get ready for the next number!
+                                </div>
                             ) : null}
 
-                            <div className="text-center mb-3">
-                                <div className="mx-auto w-full rounded-md border border-white/10 bg-gradient-to-b from-black/25 to-black/10 p-3 min-h-[120px] flex items-center justify-center">
+                            {/* Enhanced Current Number Display - Larger */}
+                            <div className="text-center mb-2">
+                                <div className="mx-auto w-full rounded-xl border border-white/20 bg-gradient-to-b from-black/30 to-black/10 p-6 min-h-[180px] flex items-center justify-center shadow-inner">
                                     {currentCalledNumber ? (
-                                        <div className="w-28 h-28 rounded-full bg-gradient-to-br from-amber-300 to-yellow-500 ring-4 ring-yellow-300 flex items-center justify-center shadow-[0_0_30px_rgba(251,191,36,0.6)] animate-pop">
-                                            <div className="text-purple-800 font-extrabold text-lg drop-shadow">{`${getLetterForNumber(currentCalledNumber)}-${currentCalledNumber}`}</div>
+                                        <div className="w-40 h-40 rounded-full bg-gradient-to-br from-amber-300 via-yellow-400 to-yellow-500 ring-6 ring-yellow-300 flex items-center justify-center shadow-[0_0_50px_rgba(251,191,36,0.9)] animate-pop">
+                                            <div className="text-purple-900 font-extrabold text-2xl drop-shadow-lg">{`${getLetterForNumber(currentCalledNumber)}-${currentCalledNumber}`}</div>
                                         </div>
-                                    ) : null}
+                                    ) : (
+                                        <div className="text-white/60 text-base font-medium">Waiting for next number...</div>
+                                    )}
                                 </div>
                             </div>
 
-                            {/* Progress Bar */}
+                            {/* Enhanced Progress Bar */}
                             {showReadyMessage && (
-                                <div className="w-full bg-white/15 rounded-full h-1 mb-1">
-                                    <div className="bg-gradient-to-r from-pink-500 to-purple-500 h-1 rounded-full" style={{ width: '65%' }}></div>
+                                <div className="w-full bg-gradient-to-r from-white/20 to-white/10 rounded-full h-2 mb-1 shadow-inner">
+                                    <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 h-2 rounded-full shadow-lg animate-pulse" style={{ width: '65%' }}></div>
                                 </div>
                             )}
                         </div>
@@ -340,49 +351,57 @@ export default function GameLayout({
 
 
 
-                        {/* Right Bottom Card - User's Cartella or Watching Only */}
-                        <div className="relative rounded-xl p-2 bg-gradient-to-br from-purple-900/60 to-slate-900/40 ring-1 ring-white/10 shadow-lg shadow-black/20 overflow-hidden">
+                        {/* Right Bottom Card - Enhanced User's Cartella */}
+                        <div className="relative rounded-2xl p-3 bg-gradient-to-br from-purple-900/70 to-slate-900/50 ring-1 ring-white/20 shadow-2xl shadow-black/30 overflow-hidden border border-white/10">
                             <div className="shimmer-overlay"></div>
                             {shouldWatchOnly ? (
-                                /* Watching Only Mode */
-                                <div className="rounded-lg p-4 text-center bg-transparent">
-                                    <div className="text-white font-bold text-lg mb-3">Watching Only</div>
-                                    <div className="text-white/80 text-sm mb-4">
+                                /* Enhanced Watching Only Mode */
+                                <div className="rounded-xl p-4 text-center bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-white/10">
+                                    <div className="text-white font-bold text-lg mb-3 flex items-center justify-center gap-2">
+                                        <span>👀</span>
+                                        <span>Watching Only</span>
+                                    </div>
+                                    <div className="text-white/80 text-sm mb-4 space-y-2">
                                         {hasInsufficientFunds ? (
                                             <>
-                                                <div className="mb-2">You don't have enough balance to play.</div>
-                                                <div>Please deposit to your wallet first.</div>
+                                                <div className="bg-red-500/20 border border-red-500/30 rounded-lg p-3">
+                                                    <div className="mb-1 font-semibold text-red-300">💰 Insufficient Balance</div>
+                                                    <div className="text-red-200">Please deposit to your wallet first.</div>
+                                                </div>
                                             </>
                                         ) : gamePhase === 'finished' ? (
                                             <>
-                                                <div className="mb-2">This game has finished.</div>
-                                                <div>Please wait for the next round to begin.</div>
+                                                <div className="bg-orange-500/20 border border-orange-500/30 rounded-lg p-3">
+                                                    <div className="mb-1 font-semibold text-orange-300">🏁 Game Finished</div>
+                                                    <div className="text-orange-200">Please wait for the next round to begin.</div>
+                                                </div>
                                             </>
                                         ) : (
                                             <>
-                                                <div className="mb-2">This round of the game has started.</div>
-                                                <div>Please wait here until a new round begins.</div>
+                                                <div className="bg-blue-500/20 border border-blue-500/30 rounded-lg p-3">
+                                                    <div className="mb-1 font-semibold text-blue-300">⏳ Round Started</div>
+                                                    <div className="text-blue-200">Please wait here until a new round begins.</div>
+                                                </div>
                                             </>
                                         )}
                                     </div>
-                                    {/* Wallet button removed as requested */}
                                 </div>
                             ) : (
-                                /* Normal Cartella Mode */
+                                /* Enhanced Normal Cartella Mode */
                                 <>
-                                    {/* User's Cartella - 5x5 Grid */}
-                                    <div className="rounded-lg p-2 bg-transparent">
-                                        {/* BINGO Header */}
-                                        <div className="grid grid-cols-5 gap-0 mb-1">
-                                            <div className="text-center text-white font-bold text-[11px] bg-blue-500 rounded-md py-1">B</div>
-                                            <div className="text-center text-white font-bold text-[11px] bg-purple-500 rounded-md py-1">I</div>
-                                            <div className="text-center text-white font-bold text-[11px] bg-green-500 rounded-md py-1">N</div>
-                                            <div className="text-center text-white font-bold text-[11px] bg-pink-500 rounded-md py-1">G</div>
-                                            <div className="text-center text-white font-bold text-[11px] bg-orange-500 rounded-md py-1">O</div>
+                                    {/* Enhanced User's Cartella - 5x5 Grid */}
+                                    <div className="rounded-xl p-3 bg-gradient-to-br from-slate-800/50 to-slate-900/50 border border-white/10">
+                                        {/* Enhanced BINGO Header */}
+                                        <div className="grid grid-cols-5 gap-1 mb-2">
+                                            <div className="text-center text-white font-bold text-[10px] bg-gradient-to-b from-blue-500 to-blue-600 rounded-lg py-2 shadow-lg">B</div>
+                                            <div className="text-center text-white font-bold text-[10px] bg-gradient-to-b from-purple-500 to-purple-600 rounded-lg py-2 shadow-lg">I</div>
+                                            <div className="text-center text-white font-bold text-[10px] bg-gradient-to-b from-green-500 to-green-600 rounded-lg py-2 shadow-lg">N</div>
+                                            <div className="text-center text-white font-bold text-[10px] bg-gradient-to-b from-pink-500 to-pink-600 rounded-lg py-2 shadow-lg">G</div>
+                                            <div className="text-center text-white font-bold text-[10px] bg-gradient-to-b from-orange-500 to-orange-600 rounded-lg py-2 shadow-lg">O</div>
                                         </div>
 
-                                        {/* Numbers Grid */}
-                                        <div className="grid grid-cols-5 gap-0.5">
+                                        {/* Enhanced Numbers Grid */}
+                                        <div className="grid grid-cols-5 gap-1">
                                             {Array.from({ length: 25 }, (_, i) => {
                                                 const row = Math.floor(i / 5);
                                                 const col = i % 5;
@@ -391,8 +410,8 @@ export default function GameLayout({
 
                                                 if (isCenter) {
                                                     return (
-                                                        <div key={i} className={`bg-green-500 rounded-md text-center py-1 flex items-center justify-center ${isWinningCell ? 'ring-2 ring-yellow-400 animate-pulse' : ''}`}>
-                                                            <span className="text-yellow-300 text-sm">★</span>
+                                                        <div key={i} className={`bg-gradient-to-b from-green-500 to-green-600 rounded-lg text-center py-2 flex items-center justify-center shadow-lg ${isWinningCell ? 'ring-2 ring-yellow-400 animate-pulse scale-105' : ''}`}>
+                                                            <span className="text-yellow-300 text-lg drop-shadow-lg">★</span>
                                                         </div>
                                                     );
                                                 }
@@ -417,7 +436,7 @@ export default function GameLayout({
                                                     <button
                                                         key={i}
                                                         onClick={() => toggleMark(number)}
-                                                        className={`w-full text-[10px] leading-none py-0.5 rounded-md border transition-colors duration-200 flex items-center justify-center ${isMarked ? 'bg-green-500 border-green-400 text-white animate-pop' : 'bg-white/10 text-white border-white/20'} ${isWinningCell ? 'ring-2 ring-yellow-400 animate-pulse' : ''}`}
+                                                        className={`w-full text-[9px] leading-none py-2 rounded-lg border transition-all duration-200 flex items-center justify-center font-semibold ${isMarked ? 'bg-gradient-to-b from-green-500 to-green-600 border-green-400 text-white shadow-lg scale-105 animate-pop' : 'bg-gradient-to-b from-slate-700/80 to-slate-800/80 text-slate-200 border-white/20 hover:from-blue-400/30 hover:to-blue-500/30'} ${isWinningCell ? 'ring-2 ring-yellow-400 animate-pulse scale-105' : ''}`}
                                                     >
                                                         {number}
                                                     </button>
@@ -426,10 +445,10 @@ export default function GameLayout({
                                         </div>
                                     </div>
 
-                                    {/* Cartela Number Display */}
-                                    <div className="text-center mt-2">
-                                        <div className="bg-amber-700 text-white text-sm font-bold px-4 py-1 rounded-full inline-block shadow">
-                                            Cartela No : {selectedCartela || 47}
+                                    {/* Enhanced Cartela Number Display */}
+                                    <div className="text-center mt-3">
+                                        <div className="bg-gradient-to-r from-amber-600 to-orange-600 text-white text-sm font-bold px-4 py-2 rounded-full inline-block shadow-lg border border-amber-400/30">
+                                            🎫 Cartela #{selectedCartela || 47}
                                         </div>
                                     </div>
                                 </>
@@ -452,29 +471,30 @@ export default function GameLayout({
 
 
 
-                {/* Bottom Action Buttons */}
-                <div className="flex justify-between p-2 mt-3 gap-2">
+                {/* Enhanced Bottom Action Buttons */}
+                <div className="flex justify-between p-3 mt-4 gap-3">
                     <button
                         onClick={onLeave}
-                        className="bg-red-600 text-white px-3 py-2 rounded-lg font-semibold flex-1 text-sm hover:bg-red-700 transition-colors shadow"
+                        className="bg-gradient-to-r from-red-500 to-red-600 text-white px-4 py-3 rounded-xl font-bold flex-1 text-sm hover:from-red-600 hover:to-red-700 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 border border-red-400/30"
                     >
-                        Leave
+                        🚪 Leave
                     </button>
                     <button
                         onClick={onRefresh}
-                        className="bg-amber-500 text-white px-3 py-2 rounded-lg font-semibold flex-1 flex items-center justify-center gap-1 text-sm hover:bg-amber-600 transition-colors shadow"
+                        className="bg-gradient-to-r from-amber-500 to-orange-500 text-white px-4 py-3 rounded-xl font-bold flex-1 flex items-center justify-center gap-2 text-sm hover:from-amber-600 hover:to-orange-600 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 border border-amber-400/30"
                     >
-                        <span>↻</span> Refresh
+                        <span className="animate-spin">↻</span>
+                        <span>Refresh</span>
                     </button>
                     <button
                         onClick={shouldWatchOnly ? undefined : handleBingoClaim}
                         disabled={shouldWatchOnly}
-                        className={`px-3 py-2 rounded-lg font-bold flex-1 text-sm transition-all ${shouldWatchOnly
-                            ? 'bg-gray-500 text-gray-300 cursor-not-allowed'
-                            : `bg-gradient-to-r from-yellow-400 to-orange-500 text-white hover:from-yellow-500 hover:to-orange-600 shadow ${hasLocalBingo ? 'ring-4 ring-yellow-300 shadow-[0_0_20px_rgba(250,204,21,0.7)] animate-pulse' : ''}`
+                        className={`px-4 py-3 rounded-xl font-bold flex-1 text-sm transition-all duration-200 ${shouldWatchOnly
+                            ? 'bg-gradient-to-r from-gray-500 to-gray-600 text-gray-300 cursor-not-allowed border border-gray-400/30'
+                            : `bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 text-white hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 shadow-lg hover:shadow-xl hover:scale-105 active:scale-95 border border-yellow-400/30 ${hasLocalBingo ? 'ring-4 ring-yellow-300 shadow-[0_0_30px_rgba(250,204,21,0.8)] animate-pulse' : ''}`
                             }`}
                     >
-                        BINGO
+                        🎉 BINGO
                     </button>
                 </div>
             </div>
