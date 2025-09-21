@@ -31,18 +31,14 @@ export default function Profile({ onNavigate }) {
     // Fetch profile data
     useEffect(() => {
         const fetchProfileData = async () => {
-            console.log('Profile useEffect triggered, sessionId:', sessionId);
             if (!sessionId) {
-                console.log('No sessionId available for profile fetch');
                 setLoading(false);
                 return;
             }
             try {
-                console.log('Fetching profile data with sessionId:', sessionId);
                 setLoading(true);
                 setError(null);
                 const data = await apiFetch('/user/profile', { sessionId });
-                console.log('Profile data received:', data);
                 setProfileData(data);
             } catch (error) {
                 console.error('Failed to fetch profile data:', error);

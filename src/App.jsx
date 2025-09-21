@@ -59,13 +59,6 @@ function App() {
   };
 
   const renderPage = () => {
-    // Check query parameters as fallback
-    const urlParams = new URLSearchParams(window.location.search);
-    const isAdmin = urlParams.get('admin') === 'true';
-    if (isAdmin && currentPage !== 'admin') {
-      setCurrentPage('admin');
-    }
-
     switch (currentPage) {
       case 'game':
         return <Game onNavigate={setCurrentPage} onStakeSelected={handleStakeSelected} selectedCartela={selectedCartela} selectedStake={selectedStake} />;
