@@ -251,13 +251,43 @@ body {
 .admin-form {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
+    /* Mobile-first smaller gap */
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .admin-form {
+        gap: 1.25rem;
+    }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    .admin-form {
+        gap: 1.5rem;
+    }
 }
 
 .admin-form-group {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    /* Mobile-first smaller gap */
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .admin-form-group {
+        gap: 0.625rem;
+    }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    .admin-form-group {
+        gap: 0.75rem;
+    }
 }
 
 .admin-label {
@@ -321,7 +351,22 @@ body {
     transition: all 0.2s;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
-    min-height: 6rem;
+    min-height: 4rem;
+    /* Mobile-first smaller height */
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .admin-textarea {
+        min-height: 5rem;
+    }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    .admin-textarea {
+        min-height: 6rem;
+    }
 }
 
 .admin-textarea:focus {
@@ -605,7 +650,8 @@ body {
 
 /* AdminHome specific styles to prevent overflow */
 .admin-home-container {
-    max-height: calc(100vh - 200px);
+    max-height: calc(100vh - 120px);
+    /* Reduced height to ensure visibility */
     /* Account for header and bottom nav */
     overflow-y: auto;
     overflow-x: hidden;
@@ -614,6 +660,14 @@ body {
     width: 100%;
     max-width: 100vw;
     box-sizing: border-box;
+}
+
+/* Mobile-specific adjustments */
+@media (max-width: 480px) {
+    .admin-home-container {
+        max-height: calc(100vh - 100px);
+        /* Even more space on small mobile */
+    }
 }
 
 .admin-home-container .admin-card {
