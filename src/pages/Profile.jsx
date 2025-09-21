@@ -97,13 +97,24 @@ export default function Profile({ onNavigate }) {
                     <>
                         {/* Wallet & Statistics Cards */}
                         <div className="profile-cards">
-                            {/* Wallet Balance */}
+                            {/* Main Wallet Balance */}
                             <div className="profile-card">
                                 <div className="profile-card-title">
                                     <span className="profile-card-icon">💰</span>
-                                    <span className="profile-card-label">Wallet</span>
+                                    <span className="profile-card-label">Main Wallet</span>
                                 </div>
-                                <div className="profile-card-value">{profileData.wallet.balance?.toLocaleString() || 0}</div>
+                                <div className="profile-card-value">{profileData.wallet.main?.toLocaleString() || 0}</div>
+                                <div className="profile-card-subtitle">Primary balance</div>
+                            </div>
+
+                            {/* Play Wallet Balance */}
+                            <div className="profile-card">
+                                <div className="profile-card-title">
+                                    <span className="profile-card-icon">🎮</span>
+                                    <span className="profile-card-label">Play Wallet</span>
+                                </div>
+                                <div className="profile-card-value profile-card-value-green">{profileData.wallet.play?.toLocaleString() || 0}</div>
+                                <div className="profile-card-subtitle">Game funds</div>
                             </div>
 
                             {/* Total Coins */}
@@ -112,7 +123,8 @@ export default function Profile({ onNavigate }) {
                                     <span className="profile-card-icon">🪙</span>
                                     <span className="profile-card-label">Total Coins</span>
                                 </div>
-                                <div className="profile-card-value">{profileData.wallet.coins?.toLocaleString() || 0}</div>
+                                <div className="profile-card-value profile-card-value-yellow">{profileData.wallet.coins?.toLocaleString() || 0}</div>
+                                <div className="profile-card-subtitle">Earned coins</div>
                             </div>
 
                             {/* Games Won */}
@@ -122,6 +134,7 @@ export default function Profile({ onNavigate }) {
                                     <span className="profile-card-label">Games Won</span>
                                 </div>
                                 <div className="profile-card-value">{profileData.wallet.gamesWon?.toLocaleString() || 0}</div>
+                                <div className="profile-card-subtitle">Victories</div>
                             </div>
                         </div>
 

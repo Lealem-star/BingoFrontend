@@ -14,6 +14,11 @@ export default function Wallet({ onNavigate }) {
     const [displayPhone, setDisplayPhone] = useState(null);
     const [displayRegistered, setDisplayRegistered] = useState(false);
 
+    // Transfer functionality
+    const [transferAmount, setTransferAmount] = useState('');
+    const [transferDirection, setTransferDirection] = useState('main-to-play'); // 'main-to-play' or 'play-to-main'
+    const [transferLoading, setTransferLoading] = useState(false);
+
     // Fetch wallet and profile data once
     useEffect(() => {
         if (!sessionId) {
@@ -74,6 +79,36 @@ export default function Wallet({ onNavigate }) {
             setWallet(out.wallet);
             setCoins('');
         } catch { }
+    };
+
+    const transferFunds = async () => {
+        if (!sessionId) return;
+        const amt = Number(transferAmount || 0);
+        if (!amt) return;
+
+        try {
+            setTransferLoading(true);
+            const out = await apiFetch('/wallet/transfer', {
+                method: 'POST',
+                body: {
+                    amount: amt,
+                    direction: transferDirection
+                },
+                sessionId
+            });
+            setWallet(out.wallet);
+            setTransferAmount('');
+            // Refresh transactions if on history tab
+            if (activeTab === 'history') {
+                const transactionData = await apiFetch('/user/transactions', { sessionId });
+                setTransactions(transactionData.transactions || []);
+            }
+        } catch (error) {
+            console.error('Transfer failed:', error);
+            alert('Transfer failed. Please try again.');
+        } finally {
+            setTransferLoading(false);
+        }
     };
     return (
         <div className="wallet-page">
@@ -145,6 +180,9 @@ export default function Wallet({ onNavigate }) {
                                 </div>
                                 <span className="wallet-value">{wallet.main?.toLocaleString() || 0}</span>
                             </div>
+                            <div className="wallet-card-description">
+                                Primary account balance for deposits, withdrawals, and transfers
+                            </div>
                         </div>
 
                         {/* Play Wallet */}
@@ -156,6 +194,9 @@ export default function Wallet({ onNavigate }) {
                                 </div>
                                 <span className="wallet-value wallet-value-green">{wallet.play?.toLocaleString() || 0}</span>
                             </div>
+                            <div className="wallet-card-description">
+                                Funds used for bingo games, purchasing cards, and betting
+                            </div>
                         </div>
 
                         {/* Coins */}
@@ -166,6 +207,9 @@ export default function Wallet({ onNavigate }) {
                                     <span className="wallet-label-icon">🪙</span>
                                 </div>
                                 <span className="wallet-value wallet-value-yellow">{wallet.coins?.toLocaleString() || 0}</span>
+                            </div>
+                            <div className="wallet-card-description">
+                                Earned coins that can be converted to wallet funds
                             </div>
                         </div>
                     </div>
@@ -202,22 +246,65 @@ export default function Wallet({ onNavigate }) {
                     </div>
                 )}
 
+                {/* Transfer Section - show only on Balance tab */}
+                {activeTab === 'balance' && (
+                    <div className="wallet-transfer">
+                        <h3 className="wallet-transfer-title">Transfer Funds</h3>
+                        <div className="wallet-transfer-controls">
+                            <div className="wallet-transfer-direction">
+                                <button
+                                    onClick={() => setTransferDirection('main-to-play')}
+                                    className={`wallet-transfer-btn ${transferDirection === 'main-to-play' ? 'active' : ''}`}
+                                >
+                                    Main → Play
+                                </button>
+                                <button
+                                    onClick={() => setTransferDirection('play-to-main')}
+                                    className={`wallet-transfer-btn ${transferDirection === 'play-to-main' ? 'active' : ''}`}
+                                >
+                                    Play → Main
+                                </button>
+                            </div>
+                            <div className="wallet-transfer-amount">
+                                <input
+                                    type="number"
+                                    value={transferAmount}
+                                    onChange={(e) => setTransferAmount(e.target.value)}
+                                    className="wallet-transfer-input"
+                                    placeholder="Enter amount to transfer"
+                                    min="1"
+                                />
+                                <button
+                                    onClick={transferFunds}
+                                    disabled={transferLoading || !transferAmount}
+                                    className="wallet-transfer-button"
+                                >
+                                    {transferLoading ? 'Transferring...' : 'Transfer'}
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* Convert Section - show only on Balance tab */}
                 {activeTab === 'balance' && (
                     <div className="wallet-convert">
-                        <input
-                            value={coins}
-                            onChange={(e) => setCoins(e.target.value)}
-                            className="wallet-convert-input"
-                            placeholder="Enter coins to convert"
-                        />
-                        <button
-                            onClick={convert}
-                            className="wallet-convert-button"
-                        >
-                            <span>↓</span>
-                            <span>Convert Coin</span>
-                        </button>
+                        <h3 className="wallet-convert-title">Convert Coins</h3>
+                        <div className="wallet-convert-controls">
+                            <input
+                                value={coins}
+                                onChange={(e) => setCoins(e.target.value)}
+                                className="wallet-convert-input"
+                                placeholder="Enter coins to convert"
+                            />
+                            <button
+                                onClick={convert}
+                                className="wallet-convert-button"
+                            >
+                                <span>↓</span>
+                                <span>Convert Coin</span>
+                            </button>
+                        </div>
                     </div>
                 )}
             </main>

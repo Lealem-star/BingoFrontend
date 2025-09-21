@@ -2712,6 +2712,14 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.wallet-card-description {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    line-height: 1.2;
+    margin-top: 0.25rem;
 }
 
 .wallet-card-label {
@@ -2901,6 +2909,120 @@ body {
     box-shadow: 0 4px 12px rgba(244, 114, 182, 0.3);
 }
 
+/* Wallet Transfer Styles */
+.wallet-transfer {
+    background: rgba(15, 23, 42, 0.8);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1rem;
+    padding: 1rem;
+    backdrop-filter: blur(8px);
+    margin-top: 1rem;
+}
+
+.wallet-transfer-title {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.wallet-transfer-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.wallet-transfer-direction {
+    display: flex;
+    gap: 0.5rem;
+    background: rgba(15, 23, 42, 0.6);
+    padding: 0.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.wallet-transfer-btn {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.wallet-transfer-btn.active {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-weight: 600;
+}
+
+.wallet-transfer-amount {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.wallet-transfer-input {
+    flex: 1;
+    padding: 0.75rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    background: rgba(15, 23, 42, 0.6);
+    color: white;
+    font-size: 0.875rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+}
+
+.wallet-transfer-input:focus {
+    border-color: #f472b6;
+}
+
+.wallet-transfer-input::placeholder {
+    color: #94a3b8;
+}
+
+.wallet-transfer-button {
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.wallet-transfer-button:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.wallet-transfer-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.wallet-convert-title {
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.wallet-convert-controls {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
 /* Profile Page Styles */
 .profile-page {
     min-height: 100vh;
@@ -3065,6 +3187,21 @@ body {
     font-weight: 700;
 }
 
+.profile-card-value-green {
+    color: #4ade80;
+}
+
+.profile-card-value-yellow {
+    color: #facc15;
+}
+
+.profile-card-subtitle {
+    color: #94a3b8;
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+    text-align: center;
+}
+
 .profile-settings {
     display: flex;
     flex-direction: column;
@@ -3161,7 +3298,7 @@ body {
     }
 
     .profile-cards {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(2, 1fr);
         gap: 0.75rem;
     }
 
@@ -3175,5 +3312,24 @@ body {
 
     .profile-card-value {
         font-size: 1rem;
+    }
+
+    .wallet-transfer-amount {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .wallet-transfer-button {
+        width: 100%;
+        padding: 0.75rem;
+    }
+
+    .wallet-convert-controls {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .wallet-convert-button {
+        width: 100%;
     }
 }
