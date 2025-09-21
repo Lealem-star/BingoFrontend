@@ -56,86 +56,83 @@ export default function Profile({ onNavigate }) {
     }, [sessionId]);
 
     return (
-        <div className="min-h-screen overflow-y-auto pb-28 bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
+        <div className="profile-page">
             {/* Header */}
-            <header className="p-6 pt-16 text-center">
-                <div className="flex flex-col items-center gap-3">
+            <header className="profile-header">
+                <div className="profile-header-content">
                     <div className="profile-avatar">{initials}</div>
-                    <h1 className="text-2xl font-bold text-white">{displayName}</h1>
+                    <h1 className="profile-name">{displayName}</h1>
                     {profileData.user?.isRegistered && (
-                        <div className="flex items-center gap-2 px-3 py-1 bg-green-600/20 border border-green-400/30 rounded-full">
-                            <span className="text-green-400 text-sm">✓</span>
-                            <span className="text-green-300 text-sm font-medium">Verified User</span>
+                        <div className="profile-verified">
+                            <span className="profile-verified-icon">✓</span>
+                            <span className="profile-verified-text">Verified User</span>
                         </div>
                     )}
                 </div>
             </header>
 
             {/* Main content */}
-            <main className="p-6 space-y-6">
+            <main className="profile-main">
                 {loading ? (
-                    <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-400"></div>
+                    <div className="profile-loading">
+                        <div className="profile-spinner"></div>
                     </div>
                 ) : error ? (
-                    <div className="text-center py-12">
-                        <div className="text-red-400 text-lg mb-2">❌ Error Loading Data</div>
-                        <div className="text-slate-300 mb-4">{error}</div>
+                    <div className="profile-error">
+                        <div className="profile-error-icon">❌ Error Loading Data</div>
+                        <div className="profile-error-text">{error}</div>
                         <button
                             onClick={() => window.location.reload()}
-                            className="px-4 py-2 bg-blue-600 text-white rounded"
+                            className="profile-retry-button"
                         >
                             Retry
                         </button>
                     </div>
                 ) : (
                     <>
-                        {/* Wallet & Statistics Cards - using explicit profile CSS for consistent layout */}
+                        {/* Wallet & Statistics Cards */}
                         <div className="profile-cards">
                             {/* Wallet Balance */}
                             <div className="profile-card">
-                                <div className="title">
-                                    <span>💰</span>
-                                    <span>Wallet</span>
+                                <div className="profile-card-title">
+                                    <span className="profile-card-icon">💰</span>
+                                    <span className="profile-card-label">Wallet</span>
                                 </div>
-                                <div className="value">{profileData.wallet.balance?.toLocaleString() || 0}</div>
+                                <div className="profile-card-value">{profileData.wallet.balance?.toLocaleString() || 0}</div>
                             </div>
 
                             {/* Total Coins */}
                             <div className="profile-card">
-                                <div className="title">
-                                    <span>🪙</span>
-                                    <span>Total Coins</span>
+                                <div className="profile-card-title">
+                                    <span className="profile-card-icon">🪙</span>
+                                    <span className="profile-card-label">Total Coins</span>
                                 </div>
-                                <div className="value">{profileData.wallet.coins?.toLocaleString() || 0}</div>
+                                <div className="profile-card-value">{profileData.wallet.coins?.toLocaleString() || 0}</div>
                             </div>
 
                             {/* Games Won */}
                             <div className="profile-card">
-                                <div className="title">
-                                    <span>🏆</span>
-                                    <span>Games Won</span>
+                                <div className="profile-card-title">
+                                    <span className="profile-card-icon">🏆</span>
+                                    <span className="profile-card-label">Games Won</span>
                                 </div>
-                                <div className="value">{profileData.wallet.gamesWon?.toLocaleString() || 0}</div>
+                                <div className="profile-card-value">{profileData.wallet.gamesWon?.toLocaleString() || 0}</div>
                             </div>
                         </div>
 
-
-                        {/* Game Statistics removed as requested */}
-
                         {/* Settings Section */}
-                        <div className="space-y-3">
-                            <h2 className="text-white text-base font-semibold">Settings</h2>
+                        <div className="profile-settings">
+                            <h2 className="profile-settings-title">Settings</h2>
 
-                            {/* Sound Toggle - polished switch */}
+                            {/* Sound Toggle */}
                             <div className="profile-settings-row">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-2 text-slate-200">
-                                        <span>🔉</span>
-                                        <span className="font-medium">Sound</span>
+                                <div className="profile-settings-content">
+                                    <div className="profile-settings-label">
+                                        <span className="profile-settings-icon">🔉</span>
+                                        <span className="profile-settings-text">Sound</span>
                                     </div>
-                                    <button onClick={() => setSound(!sound)} className={`switch ${sound ? 'on' : ''}`} aria-pressed={sound}>
-                                        <span className="knob"></span>
+                                    <button onClick={() => setSound(!sound)} className={`profile-switch ${sound ? 'on' : ''}`} aria-pressed={sound}>
+                                        <span className="profile-switch-knob"></span>
                                     </button>
                                 </div>
                             </div>

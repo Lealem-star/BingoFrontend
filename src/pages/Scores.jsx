@@ -65,53 +65,51 @@ export default function Scores({ onNavigate }) {
     }, [sessionId]);
 
     return (
-        <div className="min-h-screen overflow-y-auto pb-28 bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
-            <main className="p-6 pt-16 space-y-6">
+        <div className="scores-page">
+            <main className="scores-main">
                 {loading ? (
-                    <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-400"></div>
+                    <div className="scores-loading">
+                        <div className="scores-spinner"></div>
                     </div>
                 ) : (
                     <>
                         {/* Leaderboard header */}
-                        <section>
-                            <h2 className="text-white font-extrabold mb-3">Leaderboard</h2>
-                            <div className="wallet-card">
-                                <div className="flex items-center justify-between">
-                                    <div className="flex items-center gap-3">
-                                        <div className="profile-avatar" style={{ width: 40, height: 40, fontSize: 16 }}>
-                                            {String(user?.firstName || 'U').charAt(0).toUpperCase()}
-                                        </div>
-                                        <div>
-                                            <div className="text-white font-semibold">{user?.firstName || 'User'}</div>
-                                            <div className="text-slate-400 text-xs">{userStats.totalGamesPlayed} Played • {userStats.totalGamesWon} wins</div>
-                                        </div>
+                        <section className="scores-section">
+                            <h2 className="scores-title">Leaderboard</h2>
+                            <div className="scores-user-card">
+                                <div className="scores-user-info">
+                                    <div className="scores-user-avatar">
+                                        {String(user?.firstName || 'U').charAt(0).toUpperCase()}
                                     </div>
-                                    <div className="px-3 py-1 rounded-full bg-slate-800/70 border border-white/10 text-slate-200 text-xs">Unranked</div>
+                                    <div className="scores-user-details">
+                                        <div className="scores-user-name">{user?.firstName || 'User'}</div>
+                                        <div className="scores-user-stats">{userStats.totalGamesPlayed} Played • {userStats.totalGamesWon} wins</div>
+                                    </div>
                                 </div>
+                                <div className="scores-user-rank">Unranked</div>
                             </div>
                         </section>
 
-                        {/* Top Players filter bar + list (placeholder) */}
-                        <section>
-                            <h3 className="text-white font-extrabold mb-2">Top Players</h3>
-                            <div className="segmented mb-3">
-                                <button onClick={() => setTopFilter('newyear')} className={`seg ${topFilter === 'newyear' ? 'active' : ''}`}>New year</button>
-                                <button onClick={() => setTopFilter('alltime')} className={`seg ${topFilter === 'alltime' ? 'active' : ''}`}>All time</button>
-                                <button onClick={() => setTopFilter('monthly')} className={`seg ${topFilter === 'monthly' ? 'active' : ''}`}>Monthly</button>
-                                <button onClick={() => setTopFilter('weekly')} className={`seg ${topFilter === 'weekly' ? 'active' : ''}`}>Weekly</button>
-                                <button onClick={() => setTopFilter('daily')} className={`seg ${topFilter === 'daily' ? 'active' : ''}`}>Daily</button>
+                        {/* Top Players filter bar + list */}
+                        <section className="scores-section">
+                            <h3 className="scores-subtitle">Top Players</h3>
+                            <div className="scores-segmented">
+                                <button onClick={() => setTopFilter('newyear')} className={`scores-seg ${topFilter === 'newyear' ? 'active' : ''}`}>New year</button>
+                                <button onClick={() => setTopFilter('alltime')} className={`scores-seg ${topFilter === 'alltime' ? 'active' : ''}`}>All time</button>
+                                <button onClick={() => setTopFilter('monthly')} className={`scores-seg ${topFilter === 'monthly' ? 'active' : ''}`}>Monthly</button>
+                                <button onClick={() => setTopFilter('weekly')} className={`scores-seg ${topFilter === 'weekly' ? 'active' : ''}`}>Weekly</button>
+                                <button onClick={() => setTopFilter('daily')} className={`scores-seg ${topFilter === 'daily' ? 'active' : ''}`}>Daily</button>
                             </div>
-                            <div className="space-y-3">
+                            <div className="scores-leaderboard">
                                 {(leaderboards[topFilter] || []).map((p, i) => (
-                                    <div key={p.name} className="history-item">
-                                        <div className="flex items-center gap-3">
-                                            <div className="icon">{i + 1}</div>
-                                            <div className="flex-1">
-                                                <div className="text-white font-semibold">{p.name}</div>
-                                                <div className="text-slate-400 text-xs">{p.wins} wins</div>
+                                    <div key={p.name} className="scores-leaderboard-item">
+                                        <div className="scores-leaderboard-content">
+                                            <div className="scores-leaderboard-rank">{i + 1}</div>
+                                            <div className="scores-leaderboard-details">
+                                                <div className="scores-leaderboard-name">{p.name}</div>
+                                                <div className="scores-leaderboard-wins">{p.wins} wins</div>
                                             </div>
-                                            <div className="text-slate-200 font-extrabold">{p.played}</div>
+                                            <div className="scores-leaderboard-played">{p.played}</div>
                                         </div>
                                     </div>
                                 ))}

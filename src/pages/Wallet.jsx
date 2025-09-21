@@ -14,6 +14,7 @@ export default function Wallet({ onNavigate }) {
     const [displayPhone, setDisplayPhone] = useState(null);
     const [displayRegistered, setDisplayRegistered] = useState(false);
 
+    // Fetch wallet and profile data once
     useEffect(() => {
         if (!sessionId) {
             console.log('No sessionId available for wallet fetch');
@@ -36,12 +37,6 @@ export default function Wallet({ onNavigate }) {
                 const walletData = await apiFetch('/wallet', { sessionId });
                 console.log('Wallet data received:', walletData);
                 setWallet(walletData);
-
-                if (activeTab === 'history') {
-                    const transactionData = await apiFetch('/user/transactions', { sessionId });
-                    console.log('Transaction data received:', transactionData);
-                    setTransactions(transactionData.transactions || []);
-                }
             } catch (error) {
                 console.error('Failed to fetch wallet data:', error);
             } finally {
@@ -49,6 +44,22 @@ export default function Wallet({ onNavigate }) {
             }
         };
         fetchData();
+    }, [sessionId]); // Removed activeTab dependency
+
+    // Fetch transactions only when history tab is active
+    useEffect(() => {
+        if (!sessionId || activeTab !== 'history') return;
+
+        const fetchTransactions = async () => {
+            try {
+                const transactionData = await apiFetch('/user/transactions', { sessionId });
+                console.log('Transaction data received:', transactionData);
+                setTransactions(transactionData.transactions || []);
+            } catch (error) {
+                console.error('Failed to fetch transactions:', error);
+            }
+        };
+        fetchTransactions();
     }, [sessionId, activeTab]);
 
     const convert = async () => {
@@ -62,54 +73,53 @@ export default function Wallet({ onNavigate }) {
         } catch { }
     };
     return (
-        <div className="min-h-screen overflow-y-auto pb-28 bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
+        <div className="wallet-page">
             {/* Header */}
-            <header className="p-4 pt-16">
-                <div className="flex items-center justify-between">
-                    <h1 className="text-2xl font-bold text-white">Wallet</h1>
-
+            <header className="wallet-header">
+                <div className="wallet-header-content">
+                    <h1 className="wallet-title">Wallet</h1>
                 </div>
             </header>
 
-            <main className="p-4 space-y-8">
+            <main className="wallet-main">
                 {/* User Info Section */}
                 <div className="wallet-panel">
-                    <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-3">
-                            <div className="w-8 h-8 rounded-full grid place-items-center bg-white/10 border border-white/20 text-white">👤</div>
-                            <div className="flex flex-col">
-                                <span className="text-white font-medium">
+                    <div className="wallet-user-info">
+                        <div className="wallet-user-details">
+                            <div className="wallet-user-icon">👤</div>
+                            <div className="wallet-user-text">
+                                <span className="wallet-user-name">
                                     {displayPhone || profileData?.user?.firstName || user?.firstName || 'Player'}
                                 </span>
                                 {displayPhone && (
-                                    <span className="text-slate-300 text-xs">{displayPhone}</span>
+                                    <span className="wallet-user-phone">{displayPhone}</span>
                                 )}
                             </div>
                         </div>
                         {displayRegistered ? (
-                            <div className="flex items-center gap-2 px-3 py-1 rounded-full bg-green-600/20 border border-green-400/30">
-                                <span className="text-green-400 text-sm">✓</span>
-                                <span className="text-green-300 text-sm font-medium">Verified</span>
+                            <div className="wallet-status-verified">
+                                <span className="wallet-status-icon">✓</span>
+                                <span className="wallet-status-text">Verified</span>
                             </div>
                         ) : (
-                            <div className="flex items-center gap-2 bg-yellow-600/20 px-3 py-1 rounded-full border border-yellow-400/30">
-                                <span className="text-yellow-400 text-sm">!</span>
-                                <span className="text-yellow-300 text-sm font-medium">Not registered</span>
+                            <div className="wallet-status-unverified">
+                                <span className="wallet-status-icon">!</span>
+                                <span className="wallet-status-text">Not registered</span>
                             </div>
                         )}
                     </div>
 
                     {/* Tabs */}
-                    <div className="segmented">
+                    <div className="wallet-segmented">
                         <button
                             onClick={() => setActiveTab('balance')}
-                            className={`seg ${activeTab === 'balance' ? 'active' : ''}`}
+                            className={`wallet-seg ${activeTab === 'balance' ? 'active' : ''}`}
                         >
                             Balance
                         </button>
                         <button
                             onClick={() => setActiveTab('history')}
-                            className={`seg ${activeTab === 'history' ? 'active' : ''}`}
+                            className={`wallet-seg ${activeTab === 'history' ? 'active' : ''}`}
                         >
                             History
                         </button>
@@ -117,70 +127,70 @@ export default function Wallet({ onNavigate }) {
                 </div>
 
                 {loading ? (
-                    <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-400"></div>
+                    <div className="wallet-loading">
+                        <div className="wallet-spinner"></div>
                     </div>
                 ) : activeTab === 'balance' ? (
                     /* Wallet Balances */
-                    <div className="space-y-8">
+                    <div className="wallet-balances">
                         {/* Main Wallet */}
                         <div className="wallet-card">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <span className="label">Main Wallet</span>
-                                    <span className="text-blue-400 text-sm">💰</span>
+                            <div className="wallet-card-content">
+                                <div className="wallet-card-label">
+                                    <span className="wallet-label-text">Main Wallet</span>
+                                    <span className="wallet-label-icon">💰</span>
                                 </div>
-                                <span className="value">{wallet.main?.toLocaleString() || 0}</span>
+                                <span className="wallet-value">{wallet.main?.toLocaleString() || 0}</span>
                             </div>
                         </div>
 
                         {/* Play Wallet */}
                         <div className="wallet-card">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <span className="label">Play Wallet</span>
-                                    <span className="text-green-400 text-sm">🎮</span>
+                            <div className="wallet-card-content">
+                                <div className="wallet-card-label">
+                                    <span className="wallet-label-text">Play Wallet</span>
+                                    <span className="wallet-label-icon">🎮</span>
                                 </div>
-                                <span className="value green">{wallet.play?.toLocaleString() || 0}</span>
+                                <span className="wallet-value wallet-value-green">{wallet.play?.toLocaleString() || 0}</span>
                             </div>
                         </div>
 
                         {/* Coins */}
                         <div className="wallet-card">
-                            <div className="flex items-center justify-between">
-                                <div className="flex items-center gap-2">
-                                    <span className="label">Coins</span>
-                                    <span className="text-yellow-400 text-sm">🪙</span>
+                            <div className="wallet-card-content">
+                                <div className="wallet-card-label">
+                                    <span className="wallet-label-text">Coins</span>
+                                    <span className="wallet-label-icon">🪙</span>
                                 </div>
-                                <span className="value yellow">{wallet.coins?.toLocaleString() || 0}</span>
+                                <span className="wallet-value wallet-value-yellow">{wallet.coins?.toLocaleString() || 0}</span>
                             </div>
                         </div>
                     </div>
                 ) : (
                     /* Transaction History */
-                    <div className="space-y-8">
-                        <h3 className="history-title">Recent Transactions</h3>
+                    <div className="wallet-history">
+                        <h3 className="wallet-history-title">Recent Transactions</h3>
                         {transactions.length === 0 ? (
-                            <div className="rounded-2xl p-8 border border-white/10 bg-slate-900/40 text-center">
-                                <div className="text-slate-400 text-lg mb-2">📝</div>
-                                <div className="text-slate-300">No transactions yet</div>
+                            <div className="wallet-empty-state">
+                                <div className="wallet-empty-icon">📝</div>
+                                <div className="wallet-empty-text">No transactions yet</div>
                             </div>
                         ) : (
                             transactions.map((transaction) => (
-                                <div key={transaction.id} className="history-item">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex items-center gap-3">
-                                            <div className="icon">📄</div>
-                                            <div>
-                                                <div className="text-white font-semibold">{transaction.description || (transaction.type === 'deposit' ? 'Deposit' : 'Transaction')}</div>
-                                                <div className="text-slate-400 text-xs mt-0.5">
+                                <div key={transaction.id} className="wallet-transaction">
+                                    <div className="wallet-transaction-content">
+                                        <div className="wallet-transaction-info">
+                                            <div className="wallet-transaction-icon">📄</div>
+                                            <div className="wallet-transaction-details">
+                                                <div className="wallet-transaction-description">{transaction.description || (transaction.type === 'deposit' ? 'Deposit' : 'Transaction')}</div>
+                                                <div className="wallet-transaction-date">
                                                     {new Date(transaction.createdAt).toLocaleString()}
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="text-right">
-                                            <div className={`text-lg font-extrabold ${transaction.amount > 0 ? 'text-emerald-400' : 'text-rose-400'}`}>{transaction.amount > 0 ? `+${transaction.amount}` : `${transaction.amount}`}</div>
-                                            <div className={`text-xs font-semibold ${transaction.status === 'Approved' || transaction.amount > 0 ? 'text-emerald-400' : 'text-slate-400'}`}>{transaction.status || (transaction.amount > 0 ? 'Approved' : '')}</div>
+                                        <div className="wallet-transaction-amount">
+                                            <div className={`wallet-transaction-value ${transaction.amount > 0 ? 'positive' : 'negative'}`}>{transaction.amount > 0 ? `+${transaction.amount}` : `${transaction.amount}`}</div>
+                                            <div className={`wallet-transaction-status ${transaction.status === 'Approved' || transaction.amount > 0 ? 'approved' : 'pending'}`}>{transaction.status || (transaction.amount > 0 ? 'Approved' : '')}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -191,16 +201,16 @@ export default function Wallet({ onNavigate }) {
 
                 {/* Convert Section - show only on Balance tab */}
                 {activeTab === 'balance' && (
-                    <div className="wallet-card space-y-3 mt-8">
+                    <div className="wallet-convert">
                         <input
                             value={coins}
                             onChange={(e) => setCoins(e.target.value)}
-                            className="wallet-input"
+                            className="wallet-convert-input"
                             placeholder="Enter coins to convert"
                         />
                         <button
                             onClick={convert}
-                            className="wallet-button flex items-center justify-center gap-2"
+                            className="wallet-convert-button"
                         >
                             <span>↓</span>
                             <span>Convert Coin</span>
