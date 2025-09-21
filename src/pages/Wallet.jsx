@@ -22,6 +22,9 @@ export default function Wallet({ onNavigate }) {
     // Quick transfer functionality
     const [quickTransferLoading, setQuickTransferLoading] = useState(false);
 
+    // History loading state
+    const [historyLoading, setHistoryLoading] = useState(false);
+
     // Fetch wallet and profile data once
     useEffect(() => {
         if (!sessionId) {
@@ -78,10 +81,19 @@ export default function Wallet({ onNavigate }) {
 
         const fetchTransactions = async () => {
             try {
+                setHistoryLoading(true);
+                const timeoutId = setTimeout(() => {
+                    setHistoryLoading(false);
+                }, 10000); // 10 second timeout
+
                 const transactionData = await apiFetch('/user/transactions', { sessionId });
+                clearTimeout(timeoutId);
                 setTransactions(transactionData.transactions || []);
             } catch (error) {
                 console.error('Failed to fetch transactions:', error);
+                setTransactions([]); // Ensure we have an empty array on error
+            } finally {
+                setHistoryLoading(false);
             }
         };
         fetchTransactions();
@@ -246,9 +258,6 @@ export default function Wallet({ onNavigate }) {
                                 </div>
                                 <span className="wallet-value">{wallet.main?.toLocaleString() || 0}</span>
                             </div>
-                            <div className="wallet-card-description">
-                                Primary account balance for deposits, withdrawals, and transfers
-                            </div>
                             {/* Quick Transfer Icon */}
                             <button
                                 onClick={() => quickTransfer('main-to-play')}
@@ -272,9 +281,6 @@ export default function Wallet({ onNavigate }) {
                                     <span className="wallet-label-icon">🎮</span>
                                 </div>
                                 <span className="wallet-value wallet-value-green">{wallet.play?.toLocaleString() || 0}</span>
-                            </div>
-                            <div className="wallet-card-description">
-                                Funds used for bingo games, purchasing cards, and betting
                             </div>
                             {/* Quick Transfer Icon */}
                             <button
@@ -309,7 +315,12 @@ export default function Wallet({ onNavigate }) {
                     /* Transaction History */
                     <div className="wallet-history">
                         <h3 className="wallet-history-title">Recent Transactions</h3>
-                        {transactions.length === 0 ? (
+                        {historyLoading ? (
+                            <div className="wallet-loading">
+                                <div className="wallet-spinner"></div>
+                                <div className="wallet-loading-text">Loading transactions...</div>
+                            </div>
+                        ) : transactions.length === 0 ? (
                             <div className="wallet-empty-state">
                                 <div className="wallet-empty-icon">📝</div>
                                 <div className="wallet-empty-text">No transactions yet</div>

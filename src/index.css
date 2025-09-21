@@ -2680,9 +2680,17 @@ body {
 
 .wallet-loading {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     padding: 3rem 0;
+    gap: 1rem;
+}
+
+.wallet-loading-text {
+    color: #94a3b8;
+    font-size: 0.875rem;
+    text-align: center;
 }
 
 .wallet-spinner {
