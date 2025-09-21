@@ -650,8 +650,8 @@ body {
 
 /* AdminHome specific styles to prevent overflow */
 .admin-home-container {
-    max-height: calc(100vh - 120px);
-    /* Reduced height to ensure visibility */
+    max-height: calc(100vh - 100px);
+    /* Give more space for scrollable card */
     /* Account for header and bottom nav */
     overflow-y: auto;
     overflow-x: hidden;
@@ -675,8 +675,34 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    overflow: hidden;
+    overflow-x: hidden;
     /* Prevent horizontal overflow */
+    overflow-y: auto;
+    /* Make card scrollable when content is big */
+    max-height: calc(100vh - 140px);
+    /* Limit card height */
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+}
+
+/* Ensure proper scrolling behavior */
+.admin-home-container .admin-card::-webkit-scrollbar {
+    width: 4px;
+    /* Thin scrollbar */
+}
+
+.admin-home-container .admin-card::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.admin-home-container .admin-card::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+}
+
+.admin-home-container .admin-card::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.5);
 }
 
 .admin-file-input {
