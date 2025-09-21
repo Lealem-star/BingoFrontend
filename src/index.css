@@ -153,35 +153,99 @@ body {
     max-width: 100%;
 }
 
-/* Admin Pages CSS */
+/* Admin Pages CSS - Mobile First */
 .admin-container {
-    padding: 2rem 1.5rem 6rem 1.5rem;
+    padding: 1rem 0.75rem 5rem 0.75rem;
+    /* Mobile-first padding */
     /* Added bottom padding for fixed nav */
     display: flex;
     flex-direction: column;
-    gap: 2rem;
+    gap: 1rem;
+    /* Smaller gap for mobile */
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .admin-container {
+        padding: 1.5rem 1rem 6rem 1rem;
+        gap: 1.5rem;
+    }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    .admin-container {
+        padding: 2rem 1.5rem 6rem 1.5rem;
+        gap: 2rem;
+    }
 }
 
 .admin-card {
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
-    border-radius: 1.5rem;
-    padding: 2rem;
+    border-radius: 1rem;
+    /* Smaller radius for mobile */
+    padding: 1rem;
+    /* Mobile-first padding */
     border: 1px solid rgba(255, 255, 255, 0.15);
-    box-shadow: 0 25px 50px rgba(139, 92, 246, 0.1);
+    box-shadow: 0 10px 25px rgba(139, 92, 246, 0.1);
+    /* Lighter shadow for mobile */
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .admin-card {
+        border-radius: 1.25rem;
+        padding: 1.5rem;
+        box-shadow: 0 15px 35px rgba(139, 92, 246, 0.1);
+    }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    .admin-card {
+        border-radius: 1.5rem;
+        padding: 2rem;
+        box-shadow: 0 25px 50px rgba(139, 92, 246, 0.1);
+    }
 }
 
 .admin-title {
     color: white;
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    /* Mobile-first font size */
     font-weight: bold;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    /* Mobile-first margin */
     text-align: center;
     background: linear-gradient(to right, #fbbf24, #f97316);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .admin-title {
+        font-size: 1.375rem;
+        margin-bottom: 1.5rem;
+    }
+}
+
+/* Desktop and up */
+@media (min-width: 1024px) {
+    .admin-title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
 }
 
 .admin-form {
@@ -547,6 +611,9 @@ body {
     overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
     /* Smooth scrolling on iOS */
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
 }
 
 .admin-home-container .admin-card {
@@ -554,8 +621,8 @@ body {
     width: 100%;
     max-width: 100%;
     box-sizing: border-box;
-    overflow: visible;
-    /* Allow content to flow naturally */
+    overflow: hidden;
+    /* Prevent horizontal overflow */
 }
 
 .admin-file-input {
@@ -571,6 +638,10 @@ body {
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
     cursor: pointer;
+    min-width: 0;
+    /* Prevent flex item from growing beyond container */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .admin-file-input::file-selector-button {
@@ -652,8 +723,11 @@ body {
     align-items: center;
     margin-bottom: 2rem;
     width: 100%;
-    gap: 2rem;
-    /* Add space between buttons */
+    max-width: 100%;
+    gap: 1rem;
+    /* Reduced gap to prevent overflow */
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .admin-balance-toggle .admin-balance-button:first-child {
@@ -675,10 +749,13 @@ body {
 }
 
 .admin-balance-button {
-    padding: 1rem 2rem;
-    border-radius: 1rem;
+    padding: 0.5rem 0.75rem;
+    /* Mobile-first padding */
+    border-radius: 0.75rem;
+    /* Mobile-first radius */
     font-weight: bold;
-    font-size: 1.125rem;
+    font-size: 0.75rem;
+    /* Mobile-first font size */
     transition: all 0.3s;
     transform: scale(1);
     border: none;
@@ -686,7 +763,25 @@ body {
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.25rem;
+    /* Mobile-first gap */
+    min-width: 0;
+    /* Allow button to shrink */
+    max-width: 100%;
+    box-sizing: border-box;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Tablet and up */
+@media (min-width: 768px) {
+    .admin-balance-button {
+        padding: 0.75rem 1rem;
+        border-radius: 1rem;
+        font-size: 0.875rem;
+        gap: 0.5rem;
+    }
 }
 
 .admin-balance-button:hover {
@@ -734,12 +829,18 @@ body {
 .admin-table-header {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
+    gap: 0.5rem;
+    /* Reduced gap */
     margin-bottom: 1.5rem;
-    padding: 1rem;
+    padding: 0.75rem;
+    /* Reduced padding */
     background: linear-gradient(to right, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.08));
     border-radius: 0.75rem;
     border: 1px solid rgba(255, 255, 255, 0.2);
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .admin-table-header-item {
@@ -759,8 +860,10 @@ body {
 .admin-table-row {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    padding: 1rem;
+    gap: 0.5rem;
+    /* Reduced gap */
+    padding: 0.75rem;
+    /* Reduced padding */
     background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.04) 100%);
     backdrop-filter: blur(8px);
     -webkit-backdrop-filter: blur(8px);
@@ -768,6 +871,10 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.15);
     box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
     transition: all 0.3s;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .admin-table-row:hover {
@@ -775,14 +882,20 @@ body {
 }
 
 .admin-table-cell {
-    font-size: 0.875rem;
+    font-size: 0.75rem;
+    /* Reduced font size */
     font-weight: 500;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.25rem;
+    /* Reduced gap */
+    min-width: 0;
+    /* Allow cell to shrink */
+    max-width: 100%;
+    box-sizing: border-box;
 }
 
 .admin-table-cell-bold {
