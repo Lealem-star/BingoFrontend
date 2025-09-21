@@ -282,60 +282,39 @@ export default function GameLayout({
                         {/* Right Top Card - Enhanced Game Status */}
                         <div className="relative rounded-2xl p-4 bg-gradient-to-br from-purple-900/70 to-slate-900/50 ring-1 ring-white/20 shadow-2xl shadow-pink-500/20 backdrop-blur-md overflow-hidden border border-white/10">
                             <div className="shimmer-overlay"></div>
-                            {/* Compact Game Status Header */}
-                            <div className="flex items-center justify-between mb-2">
-                                {showReadyMessage ? (
-                                    <div className="flex items-center gap-1.5 w-full mr-2">
-                                        <div className="flex gap-0.5">
-                                            <div className="w-2 h-2 bg-gradient-to-r from-pink-400 to-pink-500 rounded-full animate-pulse shadow-md"></div>
-                                            <div className="w-2 h-2 bg-gradient-to-r from-purple-400 to-purple-500 rounded-full animate-pulse shadow-md"></div>
-                                            <div className="w-2 h-2 bg-gradient-to-r from-amber-300 to-yellow-400 rounded-full animate-pulse shadow-md"></div>
-                                        </div>
-                                        <div className="flex-1 h-3 bg-gradient-to-r from-white/10 to-white/5 rounded-full border border-white/20 overflow-hidden shadow-inner">
-                                            <div className="h-full w-3/4 bg-gradient-to-r from-amber-400 via-pink-500 to-purple-500 animate-pulse shadow-md"></div>
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div className="flex items-center gap-0.5 bg-gradient-to-r from-white/15 to-white/5 rounded-full px-2 py-1.5 border border-white/20 shadow-md shadow-black/30 backdrop-blur-sm">
+                            {/* Reference Design Status Header */}
+                            <div className="flex items-center justify-between mb-4 px-1">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-white/80 text-sm font-medium">Recent Numbers</span>
+                                    <div className="flex items-center gap-1">
                                         {recentCalledNumbers.map((num, idx) => {
                                             const letter = getLetterForNumber(num);
                                             return (
-                                                <div key={`${num}-${idx}`} className={`text-white text-[9px] font-bold px-1.5 py-0.5 rounded-full ${chipBgForLetter(letter)} shadow-sm ring-1 ring-white/20 animate-pop`}>{`${letter}-${num}`}</div>
+                                                <div key={`${num}-${idx}`} className={`text-white text-xs font-bold px-2 py-1 rounded-md ${chipBgForLetter(letter)} shadow-sm`}>{`${letter}-${num}`}</div>
                                             );
                                         })}
                                     </div>
-                                )}
-                                <button onClick={toggleAudio} aria-pressed={isAudioOn} className={`text-white text-xs w-7 h-7 grid place-items-center rounded-full border transition-all duration-200 ${isAudioOn ? 'bg-gradient-to-br from-green-500/40 to-green-600/40 border-green-400/50 shadow-md shadow-green-500/20' : 'bg-white/10 border-white/20 hover:bg-white/20'}`}>
+                                </div>
+                                <button onClick={toggleAudio} aria-pressed={isAudioOn} className={`text-white text-lg w-8 h-8 grid place-items-center rounded-full transition-all duration-200 ${isAudioOn ? 'bg-green-500/20 hover:bg-green-500/30' : 'bg-white/10 hover:bg-white/20'}`}>
                                     {isAudioOn ? '🔊' : '🔈'}
                                 </button>
                             </div>
 
-                            {/* Compact Game Message */}
-                            {showReadyMessage ? (
-                                <div className="text-white font-semibold mb-2 text-center text-xs bg-gradient-to-r from-amber-400/20 to-pink-500/20 rounded-md py-1.5 px-2 border border-white/10">
-                                    🎯 Get ready for the next number!
-                                </div>
-                            ) : null}
-
-                            {/* Enhanced Current Number Display - Larger */}
+                            {/* Reference Design Current Number Display */}
                             <div className="text-center mb-2">
-                                <div className="mx-auto w-full rounded-xl border border-white/20 bg-gradient-to-b from-black/30 to-black/10 p-6 min-h-[180px] flex items-center justify-center shadow-inner">
+                                <div className="mx-auto w-full flex items-center justify-center">
                                     {currentCalledNumber ? (
-                                        <div className="w-40 h-40 rounded-full bg-gradient-to-br from-amber-300 via-yellow-400 to-yellow-500 ring-6 ring-yellow-300 flex items-center justify-center shadow-[0_0_50px_rgba(251,191,36,0.9)] animate-pop">
-                                            <div className="text-purple-900 font-extrabold text-2xl drop-shadow-lg">{`${getLetterForNumber(currentCalledNumber)}-${currentCalledNumber}`}</div>
+                                        <div className="w-48 h-48 rounded-full bg-white border-8 border-yellow-400 flex items-center justify-center shadow-2xl">
+                                            <div className="text-purple-900 font-extrabold text-3xl">{`${getLetterForNumber(currentCalledNumber)}-${currentCalledNumber}`}</div>
                                         </div>
                                     ) : (
-                                        <div className="text-white/60 text-base font-medium">Waiting for next number...</div>
+                                        <div className="w-48 h-48 rounded-full bg-white/20 border-8 border-white/30 flex items-center justify-center">
+                                            <div className="text-white/60 text-lg font-medium">Waiting...</div>
+                                        </div>
                                     )}
                                 </div>
                             </div>
 
-                            {/* Enhanced Progress Bar */}
-                            {showReadyMessage && (
-                                <div className="w-full bg-gradient-to-r from-white/20 to-white/10 rounded-full h-2 mb-1 shadow-inner">
-                                    <div className="bg-gradient-to-r from-pink-500 via-purple-500 to-amber-500 h-2 rounded-full shadow-lg animate-pulse" style={{ width: '65%' }}></div>
-                                </div>
-                            )}
                         </div>
 
 
