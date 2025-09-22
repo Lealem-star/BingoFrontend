@@ -283,27 +283,125 @@ export default function Game({ onNavigate, onStakeSelected, selectedCartela, sel
         );
     }
 
-    // Main game screen - Using separate component
+    // Show GameLayout only when game is running or when player has selected a cartella
+    if (phase === 'running' || myCard) {
+        return (
+            <>
+                <GameLayout
+                    stake={stake}
+                    called={called}
+                    selectedCartela={myCard?.id || selectedCartela}
+                    onClaimBingo={claimBingo}
+                    onNavigate={onNavigate}
+                    onLeave={handleLeave}
+                    gameStatus={phase === 'running' ? 'playing' : 'ready'}
+                    currentCalledNumber={currentCalledNumber}
+                    onRefresh={() => window.location.reload()}
+                    playersCount={playersCount}
+                    walletBalance={Number(wallet?.balance || 0)}
+                    isWatchingOnly={!myCard}
+                    gamePhase={phase === 'running' ? 'playing' : (phase === 'announce' ? 'finished' : 'waiting')}
+                />
+                <WinnerAnnounce open={showWinners} onClose={() => setShowWinners(false)} winners={winners} />
+                <BottomNav current="game" onNavigate={onNavigate} />
+            </>
+        );
+    }
+
+    // Show cartella selection screen when in registration phase
+    if (phase === 'registration') {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
+                <header className="p-4">
+                    <div className="app-header">
+                        <div className="app-logo">
+                            <div className="logo-circle">
+                                <img src={lbLogo} alt="Love Bingo Logo" className="logo-image" />
+                            </div>
+                            <span className="app-title">Love Bingo</span>
+                        </div>
+                        <button className="rules-button" onClick={() => onNavigate?.('rules')}>
+                            <span className="rules-icon">❓</span>
+                            <span>Rules</span>
+                        </button>
+                    </div>
+                    <h1 className="text-center text-3xl md:text-4xl font-extrabold leading-tight mt-6 text-white">
+                        Choose Your Cartella
+                    </h1>
+                </header>
+
+                <main className="p-4 space-y-4">
+                    <div className="stake-card rounded-2xl p-4 mx-auto max-w-md fade-in-up mt-4">
+                        <div className="stake-card__header">
+                            <div className="play-icon">🎫</div>
+                            <div className="stake-card__title">Select Cartella</div>
+                        </div>
+                        <div className="text-center text-white/80 text-sm mb-4">
+                            Stake: {stake} ETB | Players: {playersCount}
+                        </div>
+                        <div className="grid grid-cols-5 gap-2 max-h-60 overflow-y-auto">
+                            {Array.from({ length: 100 }, (_, i) => i + 1).map(cardNumber => (
+                                <button
+                                    key={cardNumber}
+                                    onClick={() => selectCard(cardNumber)}
+                                    className={`cartella-btn ${myCard?.id === cardNumber ? 'cartella-btn-selected' : 'cartella-btn-available'}`}
+                                >
+                                    {cardNumber}
+                                </button>
+                            ))}
+                        </div>
+                        {myCard && (
+                            <div className="text-center text-green-400 text-sm mt-4">
+                                ✅ Selected Cartella #{myCard.id}
+                            </div>
+                        )}
+                    </div>
+
+                    <StatsPanel />
+                </main>
+
+                <BottomNav current="game" onNavigate={onNavigate} />
+            </div>
+        );
+    }
+
+    // Show waiting screen for other phases
     return (
-        <>
-            <GameLayout
-                stake={stake}
-                called={called}
-                selectedCartela={myCard?.id || selectedCartela}
-                onClaimBingo={claimBingo}
-                onNavigate={onNavigate}
-                onLeave={handleLeave}
-                gameStatus={phase === 'running' ? 'playing' : 'ready'}
-                currentCalledNumber={currentCalledNumber}
-                onRefresh={() => window.location.reload()}
-                playersCount={playersCount}
-                walletBalance={Number(wallet?.balance || 0)}
-                isWatchingOnly={!myCard}
-                gamePhase={phase === 'running' ? 'playing' : (phase === 'announce' ? 'finished' : 'waiting')}
-            />
-            <WinnerAnnounce open={showWinners} onClose={() => setShowWinners(false)} winners={winners} />
+        <div className="min-h-screen bg-gradient-to-br from-purple-900 via-purple-800 to-purple-900">
+            <header className="p-4">
+                <div className="app-header">
+                    <div className="app-logo">
+                        <div className="logo-circle">
+                            <img src={lbLogo} alt="Love Bingo Logo" className="logo-image" />
+                        </div>
+                        <span className="app-title">Love Bingo</span>
+                    </div>
+                    <button className="rules-button" onClick={() => onNavigate?.('rules')}>
+                        <span className="rules-icon">❓</span>
+                        <span>Rules</span>
+                    </button>
+                </div>
+                <h1 className="text-center text-3xl md:text-4xl font-extrabold leading-tight mt-6 text-white">
+                    Waiting for Game...
+                </h1>
+            </header>
+
+            <main className="p-4 space-y-4">
+                <div className="stake-card rounded-2xl p-4 mx-auto max-w-md fade-in-up mt-4">
+                    <div className="stake-card__header">
+                        <div className="play-icon">⏳</div>
+                        <div className="stake-card__title">Please Wait</div>
+                    </div>
+                    <div className="text-center text-white/80 text-sm">
+                        Phase: {phase} | Players: {playersCount}
+                    </div>
+                </div>
+
+                <StatsPanel />
+            </main>
+
             <BottomNav current="game" onNavigate={onNavigate} />
-        </>
+        </div>
     );
 }
 
